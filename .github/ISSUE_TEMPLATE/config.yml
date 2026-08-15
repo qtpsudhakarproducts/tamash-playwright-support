@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📦 npm package (TypeScript)
+    url: https://www.npmjs.com/package/tamash-playwright
+    about: tamash-playwright on npm, for Playwright Test / TypeScript
+  - name: 📦 PyPI package (Python)
+    url: https://pypi.org/project/tamash-playwright/
+    about: tamash-playwright on PyPI, for pytest / Python
+  - name: 📦 Maven Central (Java)
+    url: https://mvnrepository.com/artifact/io.github.qtpsudhakarproducts/tamash-playwright
+    about: tamash-playwright on Maven Central, for JUnit 5 / Java
+  - name: 📖 Documentation
+    url: https://github.com/qtpsudhakarproducts/tamash-playwright-support#readme
+    about: Setup guides, quick starts, and provider configuration for all three languages

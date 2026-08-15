@@ -1,0 +1,73 @@
+name: "🙋 Support request"
+description: Ask a "how do I…" question or get help with configuration
+title: "[Support]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Need a hand? The Language and Framework fields are used to auto-label and route your question.
+        Please check the [README quick starts](../../blob/main/README.md) and [existing issues](../../issues?q=is%3Aissue) first — your question may already be answered.
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - TypeScript
+        - Python
+        - Java
+        - Other / not applicable
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      options:
+        - Playwright Test (TypeScript)
+        - pytest (Python)
+        - JUnit 5 (Java)
+        - TestNG (Java)
+        - Other / not applicable
+    validations:
+      required: true
+
+  - type: dropdown
+    id: provider
+    attributes:
+      label: AI provider
+      options:
+        - Ollama
+        - OpenAI
+        - Anthropic
+        - Gemini
+        - Not yet configured / not applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: question
+    attributes:
+      label: What are you trying to do?
+      description: Describe your goal and, if relevant, your current setup (config, snippet, etc.). Please redact any API keys or secrets.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you already tried?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked the README and existing issues first
+          required: true
+        - label: I didn't include any API keys or secrets in this request
+          required: true

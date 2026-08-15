@@ -1,0 +1,126 @@
+name: "🐛 Bug report"
+description: Something in tamash-playwright isn't working as documented
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill in as much detail as you can — the Language and Framework fields are used to auto-label and route your issue.
+        Before submitting, please search [existing issues](../../issues?q=is%3Aissue) to avoid duplicates.
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      description: Which language binding are you using?
+      options:
+        - TypeScript
+        - Python
+        - Java
+        - Other / not applicable
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      description: Which test framework are you running tamash-playwright with?
+      options:
+        - Playwright Test (TypeScript)
+        - pytest (Python)
+        - JUnit 5 (Java)
+        - TestNG (Java)
+        - Other / not applicable
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: tamash-playwright version
+      description: The exact package version (e.g. from package.json / pip show / pom.xml)
+      placeholder: "0.5.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: provider
+    attributes:
+      label: AI provider
+      description: Which provider was configured when this happened?
+      options:
+        - Ollama
+        - OpenAI
+        - Anthropic
+        - Gemini
+        - Not applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps (or a link to a minimal repo) that reproduce the issue.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Self-healer logs / output
+      description: Paste the relevant self-healer log lines or report output. This is automatically formatted as code.
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Node/Python/Java version, browser, CI or local, etc.
+      placeholder: |
+        OS:
+        Node/Python/Java version:
+        Browser:
+        CI or local:
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and didn't find a duplicate
+          required: true
+        - label: I didn't include any API keys or secrets in this report
+          required: true
