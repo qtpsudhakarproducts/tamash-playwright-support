@@ -1,0 +1,58 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "docs/pages/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build site from README
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp docs/pages/style.css _site/style.css
+          npx --yes marked README.md > /tmp/body.html
+          node -e '
+            const fs = require("fs");
+            const template = fs.readFileSync("docs/pages/template.html", "utf8");
+            const body = fs.readFileSync("/tmp/body.html", "utf8");
+            fs.writeFileSync("_site/index.html", template.replace("__CONTENT__", body));
+          '
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

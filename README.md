@@ -165,7 +165,7 @@ Want to see it wired into a real framework before you touch your own?
 
 ## Getting support, reporting bugs, requesting features
 
-All support for `tamash-playwright` — across every language — is handled through this repository's [Issues](../../issues).
+All support for `tamash-playwright` — across every language — is handled through this repository's [Issues](https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues).
 
 Open a new issue and pick the template that matches what you need:
 
@@ -177,7 +177,7 @@ Open a new issue and pick the template that matches what you need:
 
 Each template asks you to select your **Language** (TypeScript / Python / Java) and **Framework** (Playwright Test / pytest / JUnit 5 / TestNG), plus the package version, provider, and relevant logs. That information is used to automatically label your issue (see below) and routes it to the right context faster.
 
-Before opening a new issue, please search [existing issues](../../issues?q=is%3Aissue) to avoid duplicates.
+Before opening a new issue, please search [existing issues](https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues?q=is%3Aissue) to avoid duplicates.
 
 ## Filtering issues by language and framework
 
@@ -188,11 +188,11 @@ Every issue opened through a template is automatically labeled based on the Lang
 
 along with the standard `bug` / `enhancement` / `question` type labels.
 
-Use the [Issues label filter](../../labels) or a search query to narrow things down, for example:
+Use the [Issues label filter](https://github.com/qtpsudhakarproducts/tamash-playwright-support/labels) or a search query to narrow things down, for example:
 
-- All Python issues: [`label:"lang: python"`](../../issues?q=is%3Aissue+label%3A%22lang%3A+python%22)
-- All pytest issues: [`label:"framework: pytest"`](../../issues?q=is%3Aissue+label%3A%22framework%3A+pytest%22)
-- Open TypeScript bugs: [`label:"lang: typescript" label:bug is:open`](../../issues?q=is%3Aissue+is%3Aopen+label%3Abug+label%3A%22lang%3A+typescript%22)
+- All Python issues: [`label:"lang: python"`](https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues?q=is%3Aissue+label%3A%22lang%3A+python%22)
+- All pytest issues: [`label:"framework: pytest"`](https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues?q=is%3Aissue+label%3A%22framework%3A+pytest%22)
+- Open TypeScript bugs: [`label:"lang: typescript" label:bug is:open`](https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues?q=is%3Aissue+is%3Aopen+label%3Abug+label%3A%22lang%3A+typescript%22)
 
 ---
 
