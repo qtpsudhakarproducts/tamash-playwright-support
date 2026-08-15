@@ -18,6 +18,7 @@ Free to use, including commercially. Pick your provider — **Ollama** (free), *
 
 - [How it works](#how-it-works)
 - [Packages](#packages)
+- [Full documentation](#full-documentation)
 - [Quick start — TypeScript](#quick-start--typescript)
 - [Quick start — Python](#quick-start--python)
 - [Quick start — Java](#quick-start--java)
@@ -46,13 +47,32 @@ Free to use, including commercially. Pick your provider — **Ollama** (free), *
 | Python | `tamash-playwright` | [PyPI](https://pypi.org/project/tamash-playwright/) |
 | Java | `io.github.qtpsudhakarproducts:tamash-playwright` | [Maven Central](https://mvnrepository.com/artifact/io.github.qtpsudhakarproducts/tamash-playwright) |
 
+## Full documentation
+
+Complete, per-language guides — install steps, `.env` setup, every code pattern (plain tests, Page Object Model, fixtures), what gets healed vs. not, and how to read the report — are published on this repo's site:
+
+- **[TypeScript / Playwright Test docs →](https://qtpsudhakarproducts.github.io/tamash-playwright-support/typescript.html)**
+- **[Python / pytest docs →](https://qtpsudhakarproducts.github.io/tamash-playwright-support/python.html)**
+- **[Java / JUnit 5 docs →](https://qtpsudhakarproducts.github.io/tamash-playwright-support/java.html)**
+
+The quick starts below are the short version — start there if you just want a working example.
+
 ## Quick start — TypeScript
 
 Works with Playwright Test.
 
 ```bash
 npm install tamash-playwright
-npx playwright install
+npm install -D @playwright/test
+```
+
+Create a `.env` file with your AI provider (see [Supported AI providers](#supported-ai-providers)):
+
+```sh
+HEALER_ENABLED=true
+HEALER_PROVIDER=ollama
+OLLAMA_MODEL=gpt-oss:120b
+OLLAMA_API_KEY=your_key_here
 ```
 
 Swap your import — nothing else about the test changes:
@@ -62,53 +82,49 @@ Swap your import — nothing else about the test changes:
 + import { test, expect } from 'tamash-playwright';
 ```
 
-Copy `.env.example` to `.env` in your project and set your AI provider + API key (see [Supported AI providers](#supported-ai-providers)).
-
 Verify your setup before running tests:
 
 ```bash
 npx tamash-playwright doctor
 ```
 
-Run tests as usual:
-
-```bash
-npm test
-# or, to watch it heal in a browser:
-npm run test:headed
-```
-
-Full working example: [`tamash-playwright-typescript-playwright`](https://github.com/qtpsudhakarproducts/tamash-playwright-typescript-playwright).
+Run tests as usual (`npx playwright test`, or however your project already runs them). Full guide: [TypeScript docs](https://qtpsudhakarproducts.github.io/tamash-playwright-support/typescript.html). Working example: [`tamash-playwright-typescript-playwright`](https://github.com/qtpsudhakarproducts/tamash-playwright-typescript-playwright).
 
 ## Quick start — Python
 
-Works with `pytest` + `pytest-playwright`. Requires Python 3.9+.
+Works with `pytest` + `pytest-playwright`.
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -U pip
 pip install tamash-playwright
-playwright install chromium
+playwright install
 ```
 
-Copy `.env.example` to `.env` and configure `HEALER_ENABLED`, `HEALER_PROVIDER`, your provider's API key, and `APP_BASE_URL`.
-
-Describe elements so the healer knows what to look for when a locator breaks:
+Create a `.env` file with your AI provider, same variables as above, then wire in the one line that activates healing — add this once to your project's `conftest.py`:
 
 ```python
-txt_username = page.locator('input[name="username1"]').describe("User Name Textbox")
-txt_username.fill("testadmin")
+# conftest.py
+from tamash_playwright.plugin import page  # noqa: F401
 ```
 
-Run tests:
+Write tests exactly as you would with plain Playwright — the `page` fixture is now healing- and reporting-aware:
+
+```python
+from tamash_playwright import expect
+
+def test_login(page):
+    page.goto("/")
+    page.get_by_placeholder("Username").fill("Admin")
+    page.get_by_role("button", name="Login").click()
+    expect(page.get_by_role("heading", name="Dashboard")).to_be_visible()
+```
+
+Run tests with the step-by-step HTML report turned on:
 
 ```bash
-pytest -v
+pytest --tamash-report=report.html
 ```
 
-A self-contained HTML report is generated automatically.
-
-Full working example (direct-locator and Page Object Model styles): [`tamash-playwright-python-pytest`](https://github.com/qtpsudhakarproducts/tamash-playwright-python-pytest).
+Full guide: [Python docs](https://qtpsudhakarproducts.github.io/tamash-playwright-support/python.html). Working example (plain tests, Page Object Model, and fixture-composition styles): [`tamash-playwright-python-pytest`](https://github.com/qtpsudhakarproducts/tamash-playwright-python-pytest).
 
 ## Quick start — Java
 
@@ -124,21 +140,25 @@ Add the dependency to `pom.xml` (check [Maven Central](https://mvnrepository.com
 </dependency>
 ```
 
-```bash
-mvn dependency:resolve
+Create a `.env` file with your AI provider, same variables as above, then swap Playwright's own `@UsePlaywright` for `@UseTamashPlaywright`:
+
+```diff
+- import com.microsoft.playwright.junit.UsePlaywright;
+- @UsePlaywright
++ import io.github.qtpsudhakarproducts.tamash.junit.UseTamashPlaywright;
++ @UseTamashPlaywright
+  public class LoginTest { ... }
 ```
 
-Copy `.env.example` to `.env` and set your AI provider + API key, then install the Playwright browsers via the Playwright CLI (see the sample repo for the exact `mvn`-driven install commands).
+`Page` is injected as a method parameter exactly like Playwright's own JUnit integration — write tests as normal. One Java-specific gotcha: wrap any locator/page passed to `assertThat(...)` with `unwrap(...)` (see the full guide for why).
 
-Run tests:
+Verify your setup:
 
 ```bash
-mvn test
+mvn exec:java -Dexec.args="doctor"
 ```
 
-The sample repo includes both a direct-locator style (`SampleTest.java`) and a Page Object Model style (`PomTest.java`) with a shared `TamashAssertions` helper.
-
-Full working example: [`tamash-playwright-java-junit`](https://github.com/qtpsudhakarproducts/tamash-playwright-java-junit).
+Full guide: [Java docs](https://qtpsudhakarproducts.github.io/tamash-playwright-support/java.html). Working example (direct-locator and Page Object Model styles): [`tamash-playwright-java-junit`](https://github.com/qtpsudhakarproducts/tamash-playwright-java-junit).
 
 ## Supported AI providers
 

@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - "README.md"
+      - "docs/content/**"
       - "docs/pages/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
@@ -28,18 +29,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build site from README
+      - name: Build site from README and docs
         run: |
           set -euo pipefail
           mkdir -p _site
           cp docs/pages/style.css _site/style.css
-          npx --yes marked README.md > /tmp/body.html
-          node -e '
-            const fs = require("fs");
-            const template = fs.readFileSync("docs/pages/template.html", "utf8");
-            const body = fs.readFileSync("/tmp/body.html", "utf8");
-            fs.writeFileSync("_site/index.html", template.replace("__CONTENT__", body));
-          '
+
+          render() {
+            local src="$1" out="$2" title="$3"
+            npx --yes marked "$src" > /tmp/body.html
+            node -e '
+              const fs = require("fs");
+              const [, title, outPath] = process.argv;
+              const template = fs.readFileSync("docs/pages/template.html", "utf8");
+              const body = fs.readFileSync("/tmp/body.html", "utf8");
+              const html = template.replace("__TITLE__", title).replace("__CONTENT__", body);
+              fs.writeFileSync(outPath, html);
+            ' "$title" "_site/$out"
+          }
+
+          render "README.md" "index.html" "tamash-playwright — Self-healing for Playwright"
+          render "docs/content/typescript.md" "typescript.html" "TypeScript docs — tamash-playwright"
+          render "docs/content/python.md" "python.html" "Python docs — tamash-playwright"
+          render "docs/content/java.md" "java.html" "Java docs — tamash-playwright"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
