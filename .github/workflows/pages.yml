@@ -1,3 +1,6 @@
+# Note: GitHub Pages must be enabled once by a repo admin before this workflow
+# can deploy: Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+# The Actions token cannot create the Pages site itself (admin-only operation).
 name: Deploy GitHub Pages
 
 on:
