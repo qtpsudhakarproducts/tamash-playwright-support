@@ -10,7 +10,7 @@ This repository (`tamash-playwright-support`) is the **home for documentation an
 
 > This is step one of a bigger idea — **TAMASH: Test Automation Monitoring And Self-Healing**. The original vision was full observability into test execution, monitored the way we monitor applications. Playwright kept shipping pieces of that vision natively, so instead of building a competing platform, we're building focused packages on top of it. Self-healing and reporting first — more to come.
 
-Free to use, including commercially. Pick your provider — **Ollama** (free), **OpenAI**, **Anthropic**, or **Gemini** — and give it a try.
+Free to use, including commercially. Pick your provider — **Ollama** (free), **OpenAI**, **Anthropic**, **Gemini**, or (TypeScript only, for now) your own **Claude or GitHub Copilot subscription**, no API key needed — and give it a try.
 
 ---
 
@@ -74,6 +74,16 @@ HEALER_PROVIDER=ollama
 OLLAMA_MODEL=gpt-oss:120b
 OLLAMA_API_KEY=your_key_here
 ```
+
+**No API key issued to you?** If you have a personal Claude or GitHub Copilot subscription (including the free Copilot tier), use that instead — no key to paste anywhere:
+
+```sh
+HEALER_ENABLED=true
+HEALER_PROVIDER=claude-subscription
+CLAUDE_SUBSCRIPTION_MODEL=haiku
+```
+
+Both work unattended in CI too (a `claude setup-token` token for Claude; the ambient `GITHUB_TOKEN` in GitHub Actions, or a personal-account PAT elsewhere, for Copilot). See [Supported AI providers](#supported-ai-providers) below and the [TypeScript docs](https://qtpsudhakarproducts.github.io/tamash-playwright-support/typescript.html) for the one-time CLI install/login step each needs.
 
 Swap your import — nothing else about the test changes:
 
@@ -164,14 +174,16 @@ Full guide: [Java docs](https://qtpsudhakarproducts.github.io/tamash-playwright-
 
 Pick whichever fits your budget and environment. Configuration is via environment variables (typically loaded from a `.env` file) in every language binding.
 
-| Provider | Notes |
-|---|---|
-| **Ollama** | Free, runs locally (or Ollama Cloud) — good default for trying things out |
-| **OpenAI** | Requires an OpenAI API key |
-| **Anthropic** | Requires an Anthropic API key |
-| **Gemini** | Requires a Google Gemini API key |
+| Provider | Notes | Available in |
+|---|---|---|
+| **Ollama** | Free, runs locally (or Ollama Cloud) — good default for trying things out | TypeScript, Python, Java |
+| **OpenAI** | Requires an OpenAI API key | TypeScript, Python, Java |
+| **Anthropic** | Requires an Anthropic API key | TypeScript, Python, Java |
+| **Gemini** | Requires a Google Gemini API key | TypeScript, Python, Java |
+| **Claude subscription** | No API key — uses a personal Claude Pro/Max/Team/Enterprise subscription. Works unattended in CI too, via a `claude setup-token` token. | TypeScript |
+| **GitHub Copilot subscription** | No API key — uses a personal Copilot subscription, including the free tier. Works unattended in GitHub Actions via the ambient `GITHUB_TOKEN`, or a personal-account PAT elsewhere. | TypeScript |
 
-Each sample repo's `.env.example` documents the exact variable names for the healer toggle, provider selection, model, and API key for that language.
+Each sample repo's `.env.example` documents the exact variable names for the healer toggle, provider selection, model, and API key for that language. The two subscription-based providers are TypeScript-only for now.
 
 ## Sample implementations
 
