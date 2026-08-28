@@ -185,6 +185,8 @@ Pick whichever fits your budget and environment. Configuration is via environmen
 
 Each sample repo's `.env.example` documents the exact variable names for the healer toggle, provider selection, model, and API key for that language. The two subscription-based providers are TypeScript-only for now.
 
+There's also a free, zero-AI option — `HEALER_PROVIDER=tamash` — currently in the TypeScript package's `@beta` release (`npm install tamash-playwright@beta`). No API key, no network call, no tokens: it resolves broken locators purely by matching your `.describe()` text against the page's own accessibility tree. See the [TypeScript docs' beta section](https://qtpsudhakarproducts.github.io/tamash-playwright-support/typescript.html#trying-the-latest-features-early-the-beta-release) for the tradeoffs.
+
 ## Sample implementations
 
 Want to see it wired into a real framework before you touch your own?

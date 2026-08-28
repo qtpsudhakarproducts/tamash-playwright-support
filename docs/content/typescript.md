@@ -35,6 +35,8 @@ Create a file named `.env` in your project folder:
 HEALER_ENABLED=true
 
 # Pick one: ollama | openai | anthropic | gemini | claude-subscription | copilot-subscription
+# (also `tamash` — free, zero-AI, currently in the @beta release — see "Trying the latest
+# features early" below)
 HEALER_PROVIDER=ollama
 
 # Optional, off by default — see "Action recovery" below.
@@ -244,7 +246,7 @@ Beyond a single broken `click`/`fill`/`getByRole` on the main page, all of this 
 
 - **Popups and extra tabs.** A page opened via `context.newPage()`, `window.open`, or a `target="_blank"` link is just as healing-aware as your main `page` — no manual wrapping needed.
 - **Elements inside `<iframe>`s.** `page.frameLocator('#my-iframe')` and anything chained off it heals the same way, scoped correctly to the iframe's own document.
-- **Most of the Playwright API surface**, not just clicks and fills — `check`, `selectOption`, `dragTo`, `dispatchEvent`, read methods like `textContent`/`getAttribute`/`isChecked`, `screenshot`, and more. Every original argument (including a trailing options object like `{ force: true }` or `{ modifiers: [...] }`) is preserved on a healed replay. Methods that can't be safely healed by guessing a replacement element (`dragTo`, `drop`) are still reported honestly on failure — they're just never silently retried with a different element.
+- **Most of the Playwright API surface**, not just clicks and fills — `check`, `selectOption`, `dragTo`, `dispatchEvent`, read methods like `textContent`/`getAttribute`/`isChecked`, `screenshot`, and more. Every original argument (including a trailing options object like `{ force: true }` or `{ modifiers: [...] }`) is preserved on a healed replay. A few are deliberately excluded, but still reported honestly on failure rather than silently retried: `dragTo`/`drop` can't be safely healed by guessing a replacement element for just one side of a two-sided drag, and `waitFor` is a state check rather than an action — a timeout on it can mean a genuinely broken selector, or that the element correctly never reached the expected state (verifying something does *not* appear, say), which can't be told apart from the error alone. (`expect(locator).toBeVisible()` and similar assertions are excluded for the same reason, but never even reach this mechanism — they're Playwright's own matcher, not a method this wraps.)
 
 ## When there's no name to match: finding elements by structure
 
@@ -346,6 +348,21 @@ The same detail is also printed to the console as it happens, one line per attem
 ```
 [self-healer] src/pages/loginpage.ts:11 — locator.fill "Username Textbox" -> HEALED [provider=ollama:gpt-oss:120b, vision=no, actionRecovery=no, suggested="getByRole("textbox", { name: "Username" })", 620 tokens (489 input + 131 output)] — locator.fill: Timeout 8000ms exceeded.
 ```
+
+## Trying the latest features early: the `@beta` release
+
+New capabilities land first on npm's `beta` tag before being promoted to `latest`, so you can try them ahead of a stable release:
+
+```sh
+npm install tamash-playwright@beta
+```
+
+Currently in beta:
+
+- **`HEALER_PROVIDER=tamash` — rule-based healing, no AI required.** No API key, no subscription, no network call, no tokens. It resolves a broken locator by searching the page's accessibility tree for the same text your `.describe()` (or a named locator variable) already gives it, using the same structural-widening logic (nearby-label anchoring) the AI-backed providers use. `doctor` always reports it connected, since there's nothing external for it to fail to reach. The real, honest tradeoff: it never guesses — a paraphrased description, a raw CSS/XPath selector with no human-readable text, or two equally-plausible elements near the same anchor all get an honest decline rather than a guessed heal, exactly the cases an AI's actual reasoning can resolve that a text search can't. It also can't do the vision fallback or action-recovery tactics (both require inference this provider deliberately doesn't attempt). Best as a fast, free, fully deterministic first line of defense for well-`.describe()`d, Page-Object-style suites — fall back to one of the AI providers above for anything it declines.
+- **Wider popup/new-tab healing coverage.** Beyond `context.newPage()`, `window.open`, and `target="_blank"` links (already covered in the stable release — see above), the beta also makes pages opened via `context.waitForEvent('page')`, `page.on('popup', ...)`, and `page.waitForEvent('popup')` fully healing-aware.
+
+As with any beta, expect it to be promoted to `latest` once it's had real-world mileage — check the [CHANGELOG](https://github.com/qtpsudhakarproducts/tamash-playwright/blob/main/CHANGELOG.md) for what's shipped in the version you're running.
 
 ## License
 
