@@ -35,8 +35,8 @@ Create a file named `.env` in your project folder:
 HEALER_ENABLED=true
 
 # Pick one: ollama | openai | anthropic | gemini | claude-subscription | copilot-subscription
-# (also `tamash` — free, zero-AI, currently in the @beta release — see "Trying the latest
-# features early" below)
+# (also `ollama-local` and `tamash` — self-hosted Ollama and free zero-AI healing respectively,
+# both currently in the @beta release — see "Trying the latest features early" below)
 HEALER_PROVIDER=ollama
 
 # Optional, off by default — see "Action recovery" below.
@@ -361,6 +361,14 @@ Currently in beta:
 
 - **`HEALER_PROVIDER=tamash` — rule-based healing, no AI required.** No API key, no subscription, no network call, no tokens. It resolves a broken locator by searching the page's accessibility tree for the same text your `.describe()` (or a named locator variable) already gives it, using the same structural-widening logic (nearby-label anchoring) the AI-backed providers use. `doctor` always reports it connected, since there's nothing external for it to fail to reach. The real, honest tradeoff: it never guesses — a paraphrased description, a raw CSS/XPath selector with no human-readable text, or two equally-plausible elements near the same anchor all get an honest decline rather than a guessed heal, exactly the cases an AI's actual reasoning can resolve that a text search can't. It also can't do the vision fallback or action-recovery tactics (both require inference this provider deliberately doesn't attempt). Best as a fast, free, fully deterministic first line of defense for well-`.describe()`d, Page-Object-style suites — fall back to one of the AI providers above for anything it declines.
 - **Wider popup/new-tab healing coverage.** Beyond `context.newPage()`, `window.open`, and `target="_blank"` links (already covered in the stable release — see above), the beta also makes pages opened via `context.waitForEvent('page')`, `page.on('popup', ...)`, and `page.waitForEvent('popup')` fully healing-aware.
+- **`HEALER_PROVIDER=ollama-local` — your own self-hosted Ollama server, not Ollama Cloud.** A deliberately separate provider from `ollama` above, not a flag on it, because the auth default is genuinely different: Ollama Cloud always requires `OLLAMA_API_KEY`, while a self-hosted `ollama serve` normally has none at all, so `OLLAMA_LOCAL_API_KEY` is optional here. Set it only if your internal deployment sits behind a reverse proxy or API gateway that requires a bearer token — it's sent the same way the cloud provider's key is (`Authorization: Bearer <token>`) when present, and omitted entirely when not. `OLLAMA_LOCAL_BASE_URL` defaults to `http://localhost:11434`.
+
+  ```sh
+  HEALER_PROVIDER=ollama-local
+  OLLAMA_LOCAL_MODEL=gpt-oss:120b
+  OLLAMA_LOCAL_BASE_URL=http://your-internal-ollama-host:11434
+  # OLLAMA_LOCAL_API_KEY=   # only if your deployment requires one
+  ```
 
 As with any beta, expect it to be promoted to `latest` once it's had real-world mileage — check the [CHANGELOG](https://github.com/qtpsudhakarproducts/tamash-playwright/blob/main/CHANGELOG.md) for what's shipped in the version you're running.
 
