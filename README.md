@@ -37,7 +37,7 @@ Free to use, including commercially. Pick your provider — **Ollama** (free), *
 4. It sends that snapshot to your configured AI provider and asks it to find the described element.
 5. If the model finds a match, the locator is healed and the test retries and continues.
 6. If it can't be healed, the test fails normally — same as stock Playwright.
-7. Every attempt (healed or not) is logged: provider, model, suggested selector, and token cost, plus an HTML report of the run.
+7. Every attempt (healed or not) is logged: provider, model, suggested selector, and token cost, plus an HTML report of the run — TypeScript extends Playwright's own native report (`npx playwright show-report`); Python and Java each ship their own report instead, since neither `pytest-playwright` nor JUnit 5/TestNG has an equivalent to extend. See each language's own docs below for the exact command.
 
 ## Packages
 
