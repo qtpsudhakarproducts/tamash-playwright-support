@@ -369,6 +369,7 @@ Currently in beta:
   OLLAMA_LOCAL_BASE_URL=http://your-internal-ollama-host:11434
   # OLLAMA_LOCAL_API_KEY=   # only if your deployment requires one
   ```
+- **A skill for running the local workflow inside an AI coding assistant.** Ships at `node_modules/tamash-playwright/skills/tamash-playwright/` — reviewing, applying, verifying, and landing whatever healed at runtime, or bringing a project up to standard first (provider setup, `actionTimeout`, `.describe()` labels) if it hasn't adopted these standards yet. Pure orchestration over the exact CLI commands already documented above (`doctor`, `apply-heals`, `verify-heals.cjs`) — no new capability. Supported today: Claude Code, Kiro (identical `SKILL.md` format), Cursor, GitHub Copilot, and any `AGENTS.md`-reading tool (Antigravity, Gemini CLI, Windsurf, Zed, Aider, and others) — each with its own one-time copy step (no agent auto-discovers a skill sitting in `node_modules`), documented in the skill's own `SKILL.md`.
 
 As with any beta, expect it to be promoted to `latest` once it's had real-world mileage — check the [CHANGELOG](https://github.com/qtpsudhakarproducts/tamash-playwright/blob/main/CHANGELOG.md) for what's shipped in the version you're running.
 
