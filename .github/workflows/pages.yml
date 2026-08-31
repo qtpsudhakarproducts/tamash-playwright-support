@@ -1,18 +1,14 @@
 # Note: GitHub Pages must be enabled once by a repo admin before this workflow
 # can deploy: Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
-# The Actions token cannot create the Pages site itself (admin-only operation).
 # The auto-created "github-pages" environment also needs its deployment-branch
-# rule to allow "main" (Settings -> Environments -> github-pages) -- also
-# admin-only, the Actions token can't loosen this either.
+# rule to allow "main" (Settings -> Environments -> github-pages).
 name: Deploy GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
-      - "README.md"
-      - "docs/content/**"
-      - "docs/pages/**"
+      - "docs/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -29,40 +25,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build site from README and docs
-        run: |
-          set -euo pipefail
-          mkdir -p _site
-          cp docs/pages/style.css _site/style.css
-
-          render() {
-            local src="$1" out="$2" title="$3"
-            npx --yes marked "$src" > /tmp/body.html
-            node -e '
-              const fs = require("fs");
-              const [, title, outPath] = process.argv;
-              const template = fs.readFileSync("docs/pages/template.html", "utf8");
-              const body = fs.readFileSync("/tmp/body.html", "utf8");
-              const html = template.replace("__TITLE__", title).replace("__CONTENT__", body);
-              fs.writeFileSync(outPath, html);
-            ' "$title" "_site/$out"
-          }
-
-          render "README.md" "index.html" "tamash-playwright — Self-healing for Playwright"
-          render "docs/content/typescript.md" "typescript.html" "TypeScript docs — tamash-playwright"
-          render "docs/content/python.md" "python.html" "Python docs — tamash-playwright"
-          render "docs/content/java.md" "java.html" "Java docs — tamash-playwright"
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install doc build deps
+        run: npm --prefix docs ci
+      - name: Build site
+        run: node docs/build.mjs
+      - uses: actions/configure-pages@v5
         with:
           enablement: true
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
@@ -73,6 +47,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4

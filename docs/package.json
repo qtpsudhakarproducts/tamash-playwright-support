@@ -1,0 +1,13 @@
+{
+  "name": "tamash-playwright-docs",
+  "private": true,
+  "type": "module",
+  "description": "Static docs-site build for tamash-playwright (marked + a template).",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "marked": "^14.1.4",
+    "marked-gfm-heading-id": "^4.1.1"
+  }
+}

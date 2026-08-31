@@ -1,4 +1,8 @@
-# tamash-playwright
+# Python
+
+> This page covers the **Python + pytest** package specifically — install, fixture wiring, the report, and Python-only behaviour. For how healing works, the strategies, `needsReview`, providers, and CI, see the shared guides: [How healing works](how-healing-works.html), [Providers](providers.html), [Reports & logs](reports.html).
+>
+> The Python package versions independently of the TypeScript one — check [PyPI](https://pypi.org/project/tamash-playwright/) for the latest. The TS-only CLI features (`apply-heals`, `init-skill`, the CLI-based subscription providers) are not part of the Python package.
 
 `tamash-playwright` is a plug and play self-healing **and reporting** solution for Playwright +
 pytest. Install it, add your AI API key details, and wire in one fixture override.
@@ -27,15 +31,17 @@ This pulls in `pytest-playwright` as a dependency, so if you're starting fresh y
 playwright install
 ```
 
-Using Anthropic (Claude) as your provider needs one extra install:
+Some providers need an extra install:
 
 ```sh
-pip install "tamash-playwright[anthropic]"
+pip install "tamash-playwright[anthropic]"              # Anthropic (Claude) API key
+pip install "tamash-playwright[claude-subscription]"    # your Claude subscription, no API key
+pip install "tamash-playwright[copilot-subscription]"   # your GitHub Copilot subscription
 ```
 
 ## Step 2: Connect an AI model
 
-`tamash-playwright` needs an AI model to decide where a broken element actually went. Pick one of Ollama, OpenAI, Anthropic (Claude), or Google Gemini, and give it an API key.
+`tamash-playwright` needs an AI model to decide where a broken element actually went. Pick one of Ollama, OpenAI, Anthropic (Claude), or Google Gemini and give it an API key — or use your own Claude or GitHub Copilot subscription with no API key ([details](providers-subscription.html)).
 
 Create a file named `.env` in your project folder:
 
@@ -43,7 +49,7 @@ Create a file named `.env` in your project folder:
 # Master on/off switch. Leave this as true, or remove the line entirely.
 HEALER_ENABLED=true
 
-# Pick one: ollama | openai | anthropic | gemini
+# Pick one: ollama | openai | anthropic | gemini | claude-subscription | copilot-subscription
 HEALER_PROVIDER=ollama
 
 # --- Ollama Cloud (https://ollama.com) ---
@@ -138,13 +144,13 @@ Run the built-in doctor command to confirm everything's wired up correctly:
 tamash-playwright doctor
 ```
 
-It checks three things:
+It checks:
 
-1. **AI connectivity** — confirms `HEALER_ENABLED`/`HEALER_PROVIDER` are set correctly and actually calls your configured provider to make sure the API key and model work.
-2. **Missing `.describe()` labels** — scans your test files (`tests/` by default, or pass `--dir <path>`) for locators that don't have a `.describe('...')` label, flagging the ones most worth fixing (raw CSS/XPath selectors first).
-3. **Locators written directly in test files** — flags any locator defined inline in a test rather than inside a Page Object class, a Playwright best practice regardless of self-healing.
+1. **AI connectivity** — confirms `HEALER_ENABLED`/`HEALER_PROVIDER` and actually calls your configured provider. On failure it names the category (`not-authenticated`, `bad-model`, `network`, `timeout`) and the fix — see [Troubleshooting](troubleshooting.html).
+2. **Missing `.describe()` labels** — scans your test files (`tests/` by default, or `--dir <path>`), raw CSS/XPath first, ranked by priority.
+3. **Locators written directly in test files** — flags inline locators that belong in a Page Object.
 
-If it finds issues, the fastest fix is to open the project in an AI coding assistant (Claude Code, Cursor, GitHub Copilot, etc.) and ask it to address what it flagged. You can also add a standing rule to that assistant's instructions/skill file (e.g. `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md`) so it follows both practices automatically on any new test code going forward.
+If it finds issues, open the project in an AI coding assistant and ask it to address what's flagged.
 
 ### A quick tip for better results
 

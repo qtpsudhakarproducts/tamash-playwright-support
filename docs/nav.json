@@ -1,0 +1,59 @@
+{
+  "site": "tamash-playwright",
+  "groups": [
+    {
+      "title": "Getting Started",
+      "items": [
+        { "slug": "intro", "title": "Introduction" },
+        { "slug": "installation", "title": "Installation" },
+        { "slug": "writing-tests", "title": "Writing tests" },
+        { "slug": "ci", "title": "Running in CI" }
+      ]
+    },
+    {
+      "title": "Guides",
+      "items": [
+        { "slug": "how-healing-works", "title": "How healing works" },
+        { "slug": "vision-fallback", "title": "Vision fallback" },
+        { "slug": "action-recovery", "title": "Action recovery" },
+        { "slug": "caching", "title": "Heal caching" },
+        { "slug": "apply-heals", "title": "Making heals permanent" },
+        { "slug": "reports", "title": "Reports & logs" },
+        { "slug": "agent-skill", "title": "The AI agent skill" }
+      ]
+    },
+    {
+      "title": "Providers",
+      "items": [
+        { "slug": "providers", "title": "Overview" },
+        { "slug": "providers-api-key", "title": "API-key providers" },
+        { "slug": "providers-subscription", "title": "Claude / Copilot subscription" },
+        { "slug": "providers-cli-subscription", "title": "Kiro / Codex / Cursor" },
+        { "slug": "provider-tamash", "title": "tamash — rule-based, no AI" },
+        { "slug": "provider-ollama-local", "title": "ollama-local" }
+      ]
+    },
+    {
+      "title": "Reference",
+      "items": [
+        { "slug": "cli", "title": "CLI commands" },
+        { "slug": "env-vars", "title": "Environment variables" },
+        { "slug": "troubleshooting", "title": "Troubleshooting" }
+      ]
+    },
+    {
+      "title": "Languages",
+      "items": [
+        { "slug": "typescript", "title": "TypeScript" },
+        { "slug": "python", "title": "Python" },
+        { "slug": "java", "title": "Java" }
+      ]
+    },
+    {
+      "title": "More",
+      "items": [
+        { "slug": "release-notes", "title": "Release notes" }
+      ]
+    }
+  ]
+}
