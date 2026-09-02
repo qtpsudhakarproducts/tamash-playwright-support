@@ -27,11 +27,17 @@ OPENAI_API_KEY=sk-...
 # OPENAI_BASE_URL=https://api.openai.com/v1   # default; set for a compatible gateway
 ```
 
-Pointed `OPENAI_BASE_URL` at a self-hosted/internal OpenAI-compatible gateway behind a self-signed
-or internal-CA cert (not the real OpenAI API)? Try `pip install pip-system-certs` first; as a last
-resort, `OPENAI_TLS_VERIFY=false` (Python only, for now) skips verification — only has any effect
-when `OPENAI_BASE_URL` is actually set to something other than the real OpenAI API. Same reasoning
-as [`ollama-local`'s own TLS note](provider-ollama-local.html#a-self-signed-or-internal-ca-cert-python-only-for-now).
+`OPENAI_API_KEY` is required for the real OpenAI API above. Pointed `OPENAI_BASE_URL` at a
+self-hosted/internal OpenAI-compatible gateway instead? Two things loosen (Python only, for now):
+
+- **`OPENAI_API_KEY` becomes optional** — plenty of internal deployments have no auth layer at
+  all, the same reasoning as [`ollama-local`'s own optional key](provider-ollama-local.html). No
+  key set means no `Authorization` header is sent at all, rather than a broken one.
+- **A self-signed/internal-CA cert** gets the same opt-in escape hatch as `ollama-local`: try
+  `pip install pip-system-certs` first; as a last resort, `OPENAI_TLS_VERIFY=false` skips
+  verification — only has any effect when `OPENAI_BASE_URL` is actually set to something other
+  than the real OpenAI API. Same reasoning as
+  [`ollama-local`'s own TLS note](provider-ollama-local.html#a-self-signed-or-internal-ca-cert-python-only-for-now).
 
 ## Anthropic
 
@@ -52,8 +58,9 @@ GEMINI_API_KEY=...
 # GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai   # default
 ```
 
-Uses Gemini's OpenAI-compatible endpoint. `GEMINI_TLS_VERIFY=false` is available too, same
-last-resort/`GEMINI_BASE_URL`-only reasoning as `OPENAI_TLS_VERIFY` above.
+Uses Gemini's OpenAI-compatible endpoint. Same self-hosted-gateway notes as OpenAI above —
+`GEMINI_API_KEY` becomes optional and `GEMINI_TLS_VERIFY=false` is available, both only when
+`GEMINI_BASE_URL` is set to something other than the real Gemini API.
 
 ## Vision
 
