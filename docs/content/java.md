@@ -1,10 +1,12 @@
-# tamash-playwright
+# Java
+
+> This page covers the **Java + JUnit 5** package specifically — install, the `@UseTamashPlaywright` annotation, and Java-only behaviour. For how healing works, the strategies, `needsReview`, providers, and CI, see the shared guides: [How healing works](how-healing-works.html), [Providers](providers.html), [Reports & logs](reports.html).
+>
+> The Java package versions independently — check [Maven Central](https://central.sonatype.com/artifact/io.github.qtpsudhakarproducts/tamash-playwright) for the latest. The TS-only CLI features (`apply-heals`, `init-skill`, the CLI-based subscription providers) are not part of the Java package.
 
 `tamash-playwright` is a plug and play self-healing solution for Playwright + JUnit 5. Install it, add your AI API key details, and swap one annotation.
 
 That's it. No changes needed to your actual test methods if you're following standard Playwright/JUnit best practices.
-
-> Also available for TypeScript ([`tamash-playwright` on npm](https://www.npmjs.com/package/tamash-playwright)) and Python (`tamash-playwright` on PyPI) — same name, same idea, separate package per ecosystem.
 
 ### Why you need this
 
@@ -22,7 +24,7 @@ Add the dependency to your `pom.xml`:
 <dependency>
   <groupId>io.github.qtpsudhakarproducts</groupId>
   <artifactId>tamash-playwright</artifactId>
-  <version>0.1.0</version>
+  <version><!-- latest from Maven Central --></version>
 </dependency>
 ```
 
@@ -136,13 +138,13 @@ Run the built-in doctor command to confirm everything's wired up correctly:
 mvn exec:java -Dexec.args="doctor"
 ```
 
-It checks three things:
+It checks:
 
-1. **AI connectivity** — confirms `HEALER_ENABLED`/`HEALER_PROVIDER` are set correctly and actually calls your configured provider to make sure the API key and model work.
-2. **Missing `.describe()` labels** — scans your test files (`src/test/java` by default, or pass `-Dexec.args="doctor --dir <path>"`) for locators that don't have a `.describe("...")` label, flagging the ones most worth fixing (raw CSS/XPath selectors first).
-3. **Locators written directly in test files** — flags any locator defined inline in a test rather than inside a Page Object class, a Playwright best practice regardless of self-healing.
+1. **AI connectivity** — confirms `HEALER_ENABLED`/`HEALER_PROVIDER` and actually calls your configured provider. On failure it names the category (`not-authenticated`, `bad-model`, `network`, `timeout`) and the fix — see [Troubleshooting](troubleshooting.html).
+2. **Missing `.describe()` labels** — scans `src/test/java` (or `-Dexec.args="doctor --dir <path>"`), raw CSS/XPath first.
+3. **Locators written directly in test files** — flags inline locators that belong in a Page Object.
 
-If it finds issues, the fastest fix is to open the project in an AI coding assistant (Claude Code, Cursor, GitHub Copilot, etc.) and ask it to address what it flagged. You can also add a standing rule to that assistant's instructions/skill file (e.g. `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md`) so it follows both practices automatically on any new test code going forward.
+If it finds issues, open the project in an AI coding assistant and ask it to address what's flagged.
 
 ### A quick tip for better results
 

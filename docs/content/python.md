@@ -1,4 +1,8 @@
-# tamash-playwright
+# Python
+
+> This page covers the **Python + pytest** package specifically — install, fixture wiring, the report, and Python-only behaviour. For how healing works, the strategies, `needsReview`, providers, and CI, see the shared guides: [How healing works](how-healing-works.html), [Providers](providers.html), [Reports & logs](reports.html), [CLI commands](cli.html), [Making heals permanent](apply-heals.html), [The AI agent skill](agent-skill.html).
+>
+> The Python package versions independently of the TypeScript one — check [PyPI](https://pypi.org/project/tamash-playwright/) for the latest. It has full feature parity with the TypeScript package, including `apply-heals`, `init-skill`, and all the CLI-based subscription providers — every command below runs through the `tamash-playwright` console script installed with the package (no `npx` needed).
 
 `tamash-playwright` is a plug and play self-healing **and reporting** solution for Playwright +
 pytest. Install it, add your AI API key details, and wire in one fixture override.
@@ -27,15 +31,19 @@ This pulls in `pytest-playwright` as a dependency, so if you're starting fresh y
 playwright install
 ```
 
-Using Anthropic (Claude) as your provider needs one extra install:
+Some providers need an extra install:
 
 ```sh
-pip install "tamash-playwright[anthropic]"
+pip install "tamash-playwright[anthropic]"              # Anthropic (Claude) API key
+pip install "tamash-playwright[claude-subscription]"    # your Claude subscription, no API key
+pip install "tamash-playwright[copilot-subscription]"   # your GitHub Copilot subscription, needs Python 3.11+
 ```
+
+`ollama` / `openai` / `gemini` / `tamash` / `ollama-local` need no extra install (plain HTTP or no network at all). `cursor-subscription` / `kiro-subscription` / `codex-subscription` need no Python extra either — they shell out to the vendor's own CLI, which you install separately (see [CLI-based subscription providers](providers-cli-subscription.html)).
 
 ## Step 2: Connect an AI model
 
-`tamash-playwright` needs an AI model to decide where a broken element actually went. Pick one of Ollama, OpenAI, Anthropic (Claude), or Google Gemini, and give it an API key.
+`tamash-playwright` needs something to decide where a broken element actually went. See [Providers — overview](providers.html) for the full list and how to choose; the fastest way in is a free Ollama key.
 
 Create a file named `.env` in your project folder:
 
@@ -43,7 +51,9 @@ Create a file named `.env` in your project folder:
 # Master on/off switch. Leave this as true, or remove the line entirely.
 HEALER_ENABLED=true
 
-# Pick one: ollama | openai | anthropic | gemini
+# Pick one: ollama | ollama-local | openai | anthropic | gemini | tamash |
+#           claude-subscription | copilot-subscription |
+#           cursor-subscription | kiro-subscription | codex-subscription
 HEALER_PROVIDER=ollama
 
 # --- Ollama Cloud (https://ollama.com) ---
@@ -59,11 +69,11 @@ OLLAMA_API_KEY=
 # ANTHROPIC_API_KEY=
 
 # --- Google Gemini ---
-# GEMINI_MODEL=
+# GEMINI_MODEL=gemini-3.6-flash
 # GEMINI_API_KEY=
 ```
 
-Just fill in the API key and model for whichever one you want to use, and leave the rest as-is (or delete them).
+Just fill in the API key and model for whichever one you want to use, and leave the rest as-is (or delete them). See [Environment variables](env-vars.html) for the complete list, including the no-API-key options (`tamash`, `ollama-local`) and the local-only CLI-based subscription providers.
 
 ### Getting a free Ollama key (fastest way to get started)
 
@@ -138,13 +148,31 @@ Run the built-in doctor command to confirm everything's wired up correctly:
 tamash-playwright doctor
 ```
 
-It checks three things:
+It checks:
 
-1. **AI connectivity** — confirms `HEALER_ENABLED`/`HEALER_PROVIDER` are set correctly and actually calls your configured provider to make sure the API key and model work.
-2. **Missing `.describe()` labels** — scans your test files (`tests/` by default, or pass `--dir <path>`) for locators that don't have a `.describe('...')` label, flagging the ones most worth fixing (raw CSS/XPath selectors first).
-3. **Locators written directly in test files** — flags any locator defined inline in a test rather than inside a Page Object class, a Playwright best practice regardless of self-healing.
+1. **AI connectivity** — confirms `HEALER_ENABLED`/`HEALER_PROVIDER` and actually calls your configured provider. On failure it names the category (`not-authenticated`, `bad-model`, `network`, `timeout`) and the fix — see [Troubleshooting](troubleshooting.html).
+2. **Vision capability** — whether your configured model is expected to support the [screenshot fallback](vision-fallback.html), by name.
+3. **Action timeout** — a best-effort scan of `conftest.py` / `pytest.ini` / `pyproject.toml` for a configured default timeout, since a broken locator without one can retry silently long enough that healing never gets a turn.
+4. **Missing `.describe()` labels** — scans your test files (`tests/` by default, or `--dir <path>`), raw CSS/XPath first, ranked by priority.
+5. **Locators written directly in test files** — flags inline locators that belong in a Page Object.
+6. **Skill** — whether the [agent skill](agent-skill.html) is installed and current.
 
-If it finds issues, the fastest fix is to open the project in an AI coding assistant (Claude Code, Cursor, GitHub Copilot, etc.) and ask it to address what it flagged. You can also add a standing rule to that assistant's instructions/skill file (e.g. `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md`) so it follows both practices automatically on any new test code going forward.
+If it finds issues, open the project in an AI coding assistant and ask it to address what's flagged.
+
+## Step 6: Make heals permanent, and hand the whole loop to your agent
+
+Runtime healing never touches your source — the original broken locator stays broken forever, healed fresh on every run, until you fix it. `tamash-playwright apply-heals` closes that loop by rewriting the locator to the selector that actually worked, then generates `.tamash-playwright/verify_heals.py` so you (or CI) can re-run just the affected tests with `HEALER_ENABLED=false` and prove the fix stands on its own:
+
+```sh
+pytest --tamash-report=report.html         # heals at runtime, records to heals.jsonl
+tamash-playwright apply-heals --dry-run    # preview the source changes
+tamash-playwright apply-heals              # write them
+python .tamash-playwright/verify_heals.py  # re-run the affected tests with healing off
+```
+
+See [Making heals permanent](apply-heals.html) for the full mechanics (they're identical to the TypeScript package's), and [CLI commands](cli.html) for every flag.
+
+If you'd rather not run any of this by hand, `tamash-playwright init-skill` installs a packaged skill that teaches your AI coding agent (Claude Code, Cursor, GitHub Copilot, Windsurf, Kiro, Zed) the entire workflow above — see [The AI agent skill](agent-skill.html).
 
 ### A quick tip for better results
 
@@ -318,6 +346,8 @@ Not every heal attempt succeeds, and the report tells you exactly how far it got
 - **Triggered, but didn't recover** — the AI call itself failed (network error, wrong API key — a real `401`/`403` fails the *heal*, not your test; the original Playwright error is still what your test fails with), the AI explicitly found nothing plausible in the snapshot, or — the most informative case — the AI *did* suggest a specific replacement and it was actually tried, but that failed too. That last case shows you the exact selector the AI guessed, not just that healing didn't work.
 
 Every one of these shows up in both the console (`[self-healer] ...`) and `tamash-report.html`'s failed-step detail, with a plain-language reason and, where relevant, the AI's actual suggestion and token usage — even on a failed attempt, since token spend on a wrong guess is still worth seeing.
+
+When more than one attempt was actually made — a stale cached suggestion that missed, then a fresh one that worked; a text-based miss that fell through to vision — the console prints an `attempts:` block underneath the summary line, one row per attempt (`cache`, `ref`, `text`, `vision`, `action-recovery`) with its own provider, suggested selector, and error. A single clean success stays quiet — nothing extra to show.
 
 ## What gets reported
 
