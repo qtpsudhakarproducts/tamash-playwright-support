@@ -23,10 +23,11 @@ Fixes (1)
 
 ## Proving the fix stands on its own
 
-Every real run also writes `.tamash-playwright/verify-heals.cjs`:
+Every real run also writes a verification script — `.tamash-playwright/verify-heals.cjs` (TS) or `.tamash-playwright/verify_heals.py` (Python):
 
 ```sh
-node .tamash-playwright/verify-heals.cjs
+node .tamash-playwright/verify-heals.cjs    # TS
+python .tamash-playwright/verify_heals.py   # Python
 ```
 
 This re-runs **exactly the affected tests** with `HEALER_ENABLED=false`. A pass proves the rewritten selectors work standalone — not just "worked while healing was still propping them up." In CI, this verification step runs automatically and its result goes into the PR body.

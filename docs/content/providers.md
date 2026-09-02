@@ -8,13 +8,13 @@
 | [`openai`](providers-api-key.html#openai) | API key | ✅ | TS, Python, Java | |
 | [`anthropic`](providers-api-key.html#anthropic) | API key | ✅ | TS, Python, Java | |
 | [`gemini`](providers-api-key.html#gemini) | API key | ✅ | TS, Python, Java | |
-| [`claude-subscription`](providers-subscription.html#claude) | `claude login` / OAuth token | ✅ | TS | uses your Claude plan, no API key |
-| [`copilot-subscription`](providers-subscription.html#github-copilot) | `copilot` login / PAT | ✅ (GitHub Actions) | TS | uses your Copilot plan, no API key |
+| [`claude-subscription`](providers-subscription.html#claude) | `claude login` / OAuth token | ✅ | TS, Python | uses your Claude plan, no API key |
+| [`copilot-subscription`](providers-subscription.html#github-copilot) | `copilot` login / PAT | ✅ (GitHub Actions) | TS, Python (3.11+) | uses your Copilot plan, no API key |
 | [`tamash`](provider-tamash.html) | none | ✅ | TS, Python, Java | rule-based, zero AI, zero tokens |
 | [`ollama-local`](provider-ollama-local.html) | optional | ✅ | TS, Python, Java | your own self-hosted Ollama server |
-| [`kiro-subscription`](providers-cli-subscription.html#kiro) | `kiro-cli login` | ❌ local only | TS | verified healing; CLI-based |
-| [`codex-subscription`](providers-cli-subscription.html#codex) | `codex login` | ❌ local only | TS | verified healing; CLI-based |
-| [`cursor-subscription`](providers-cli-subscription.html#cursor) | `agent login` | ❌ local only | TS | experimental — prefer kiro/codex |
+| [`kiro-subscription`](providers-cli-subscription.html#kiro) | `kiro-cli login` | ❌ local only | TS, Python | verified healing; CLI-based |
+| [`codex-subscription`](providers-cli-subscription.html#codex) | `codex login` | ❌ local only | TS, Python | verified healing; CLI-based |
+| [`cursor-subscription`](providers-cli-subscription.html#cursor) | `agent login` | ❌ local only | TS, Python | experimental — prefer kiro/codex |
 
 ## Choosing
 

@@ -1,6 +1,6 @@
 # Environment variables
 
-Loaded from a `.env` in your project root (TypeScript), or your language's usual mechanism.
+Loaded from a `.env` in your project root — both TypeScript and Python use this same convention (Python via `python-dotenv`); Java uses its own usual mechanism.
 
 ## Core
 

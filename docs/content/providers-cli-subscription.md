@@ -1,6 +1,6 @@
 # Kiro / Codex / Cursor subscription
 
-Heal off a **Kiro**, **OpenAI Codex**, or **Cursor** subscription via the vendor's own CLI — no API key. **TypeScript only, and local development only — never CI.**
+Heal off a **Kiro**, **OpenAI Codex**, or **Cursor** subscription via the vendor's own CLI — no API key. **Local development only — never CI** (see below); available in both TS and Python.
 
 ## Why local-only
 
@@ -14,7 +14,7 @@ All three run their CLI in a **read-only mode**, so a heal call can't edit files
 | `codex-subscription` | `codex exec --skip-git-repo-check` — codex's default read-only sandbox, `approval: never` |
 | `cursor-subscription` | `agent -p --trust --mode ask --output-format json` — Cursor's read-only Q&A mode |
 
-Every call spawns a fresh CLI process (none of these vendors ship a Node SDK), so they're **slower per call** than an API-key provider — set `actionTimeout` generously (30–45s).
+Every call spawns a fresh CLI process (none of these vendors ship a first-party TS or Python SDK), so they're **slower per call** than an API-key provider — set `actionTimeout` generously (30–45s), and pad it further for a cold process spawn in CI-like environments.
 
 ## Kiro
 

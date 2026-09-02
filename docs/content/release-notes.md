@@ -3,7 +3,7 @@
 The full, dated changelog ships inside the package and is on GitHub:
 
 - **TypeScript** — [`CHANGELOG.md`](https://www.npmjs.com/package/tamash-playwright?activeTab=code) in the published package
-- **Python** — [PyPI release history](https://pypi.org/project/tamash-playwright/#history)
+- **Python** — [`CHANGELOG.md`](https://github.com/qtpsudhakarproducts/tamash-playwright-python/blob/main/CHANGELOG.md) on GitHub, and [PyPI release history](https://pypi.org/project/tamash-playwright/#history)
 - **Java** — [Maven Central versions](https://central.sonatype.com/artifact/io.github.qtpsudhakarproducts/tamash-playwright)
 
 New TypeScript capabilities land on npm's `beta` tag first:
@@ -27,3 +27,19 @@ npm install tamash-playwright@beta
 Plus the accumulated beta fixes: wider popup / new-tab coverage, a `tamash` rule-based edge case on floating labels, the `ollama-local` provider, and a stale-`dist` cleanup.
 
 Validated in CI across `claude-subscription`, `copilot-subscription`, `ollama`, and `tamash` on the [TypeScript sample repos](https://github.com/qtpsudhakarproducts/tamash-playwright-typescript-playwright) before release.
+
+## Highlights — 0.4.0 (Python)
+
+Brings the Python package to full feature parity with TypeScript's 0.8.0–0.11.0 line:
+
+**`doctor` now tells you *why* a provider failed, and the fix** — the same structured categories as TypeScript (`not-installed`, `not-authenticated`, `timeout`, `bad-model`, `network`, `bad-response`).
+
+**`tamash-playwright init-skill`** and **`apply-heals`** — both now ship in the Python package too, through the same `tamash-playwright` console script (no `npx` needed). See [Python](python.html).
+
+**Local-dev subscription providers** — `cursor-subscription`, `kiro-subscription`, `codex-subscription` join `claude-subscription`/`copilot-subscription`.
+
+**`ollama-local`** and **`tamash`** (the zero-AI, rule-based provider) — both ported over.
+
+**Full per-attempt history** — the console prints an `attempts:` block (cache/ref/text/vision/action-recovery) whenever more than one attempt was made.
+
+Validated in CI across `ollama`, `claude-subscription`, `copilot-subscription`, `openai`, and `anthropic` on the [Python sample repo](https://github.com/qtpsudhakarproducts/tamash-playwright-python-pytest) before release.
