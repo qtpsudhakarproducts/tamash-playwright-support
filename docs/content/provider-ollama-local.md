@@ -21,3 +21,22 @@ Keeping it separate also means `doctor`, the reports, and the heal log all say p
 
 - `OLLAMA_LOCAL_BASE_URL` → `http://localhost:11434`
 - Uses Ollama's native `/api/chat` endpoint (same as `ollama`).
+
+## A self-signed or internal-CA cert (Python only, for now)
+
+An internal deployment reached over `https://` often sits behind a self-signed cert or a private
+company CA — that fails TLS verification by default, the same way any HTTPS client would react to
+an untrusted cert. Try `pip install pip-system-certs` first (uses your OS's own certificate store,
+which a managed corporate machine has usually already been given the right CA for). If that isn't
+enough, set:
+
+```sh
+OLLAMA_LOCAL_TLS_VERIFY=false
+```
+
+Opt-in, defaults to verified, and scoped to `ollama-local` only — never added to `ollama`/`openai`/
+`gemini`, whose endpoints are real public cloud APIs where skipping verification would risk leaking
+the request (and its API key) to a MITM. `ollama-local` exists specifically for a self-hosted
+server you already know and trust, so a self-signed cert there is expected, not a red flag — the
+same trust model as an SSH host key on your own internal fleet. Prints a clear warning whenever
+it's active. Python-specific right now (the TypeScript package has no equivalent yet).
