@@ -15,9 +15,9 @@ Loaded from a `.env` in your project root — both TypeScript and Python use thi
 | Provider | Variables |
 |---|---|
 | `ollama` | `OLLAMA_MODEL`, `OLLAMA_API_KEY`, `OLLAMA_BASE_URL` *(opt)* |
-| `openai` | `OPENAI_MODEL`, `OPENAI_API_KEY`, `OPENAI_BASE_URL` *(opt)* |
+| `openai` | `OPENAI_MODEL`, `OPENAI_API_KEY`, `OPENAI_BASE_URL` *(opt)*, `OPENAI_TLS_VERIFY` *(opt, default `true`, only matters with a custom `OPENAI_BASE_URL` — Python only)* |
 | `anthropic` | `ANTHROPIC_MODEL`, `ANTHROPIC_API_KEY` |
-| `gemini` | `GEMINI_MODEL`, `GEMINI_API_KEY`, `GEMINI_BASE_URL` *(opt)* |
+| `gemini` | `GEMINI_MODEL`, `GEMINI_API_KEY`, `GEMINI_BASE_URL` *(opt)*, `GEMINI_TLS_VERIFY` *(opt, default `true`, only matters with a custom `GEMINI_BASE_URL` — Python only)* |
 | `claude-subscription` | `CLAUDE_SUBSCRIPTION_MODEL` *(default `haiku`)*, `CLAUDE_CODE_OAUTH_TOKEN` *(CI)* |
 | `copilot-subscription` | `COPILOT_SUBSCRIPTION_MODEL`, `COPILOT_GITHUB_TOKEN` *(CI PAT — checked ahead of `GITHUB_TOKEN`)* |
 | `ollama-local` | `OLLAMA_LOCAL_MODEL`, `OLLAMA_LOCAL_BASE_URL` *(default `http://localhost:11434`)*, `OLLAMA_LOCAL_API_KEY` *(opt)*, `OLLAMA_LOCAL_TLS_VERIFY` *(opt, default `true` — Python only, see [ollama-local](provider-ollama-local.html))* |

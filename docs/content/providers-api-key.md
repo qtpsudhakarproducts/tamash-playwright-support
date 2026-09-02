@@ -27,6 +27,12 @@ OPENAI_API_KEY=sk-...
 # OPENAI_BASE_URL=https://api.openai.com/v1   # default; set for a compatible gateway
 ```
 
+Pointed `OPENAI_BASE_URL` at a self-hosted/internal OpenAI-compatible gateway behind a self-signed
+or internal-CA cert (not the real OpenAI API)? Try `pip install pip-system-certs` first; as a last
+resort, `OPENAI_TLS_VERIFY=false` (Python only, for now) skips verification — only has any effect
+when `OPENAI_BASE_URL` is actually set to something other than the real OpenAI API. Same reasoning
+as [`ollama-local`'s own TLS note](provider-ollama-local.html#a-self-signed-or-internal-ca-cert-python-only-for-now).
+
 ## Anthropic
 
 ```sh
@@ -41,12 +47,13 @@ Uses the official `@anthropic-ai/sdk` (a bundled dependency — nothing extra to
 
 ```sh
 HEALER_PROVIDER=gemini
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.6-flash
 GEMINI_API_KEY=...
 # GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai   # default
 ```
 
-Uses Gemini's OpenAI-compatible endpoint.
+Uses Gemini's OpenAI-compatible endpoint. `GEMINI_TLS_VERIFY=false` is available too, same
+last-resort/`GEMINI_BASE_URL`-only reasoning as `OPENAI_TLS_VERIFY` above.
 
 ## Vision
 
