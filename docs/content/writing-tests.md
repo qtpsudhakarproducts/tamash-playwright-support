@@ -67,7 +67,7 @@ Pass the action you're about to do (`getDurable('fill')`) so it can guess a role
 ## What else heals — no extra setup
 
 - **Popups & new tabs** — a page from `context.newPage()`, `window.open`, a `target="_blank"` link, or `context.waitForEvent('page')` / `page.on('popup', …)` is just as healing-aware as your main `page`.
-- **`<iframe>` content** — `page.frameLocator('#f')` and anything chained off it, scoped to the iframe's document.
+- **`<iframe>` content** — `page.frameLocator('#f')` and anything chained off it, scoped to the iframe's document. Playwright 1.63's no-argument `page.frameLocator()` ("match in any frame") also heals when the page has a single frame; with several frames present it can't be told which one you meant, so healing steps aside cleanly rather than guess — pass an explicit `frameLocator('#f')` there.
 - **Most of the API surface** — not just clicks and fills. `dragTo` / `drop` and `waitFor` are deliberately excluded (see [How healing works](how-healing-works.html#what-is-never-healed)), but still reported honestly on failure.
 
 ## Not using `@playwright/test` as the runner?

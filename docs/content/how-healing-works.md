@@ -47,6 +47,7 @@ Most useful on a locator built from an `aria-ref=` — resolves it to a stable `
 - **`dragTo` / `drop`** — a two-sided operation; guessing a replacement for one side isn't safe.
 - **`waitFor`** — a state check, not an action. A timeout can mean a broken selector *or* "this correctly never appeared" (verifying absence, a real app bug). Those can't be told apart from the error alone, so healing stays out of it — the failure is still reported cleanly.
 - **`expect(locator).toBeVisible()` and similar assertions** — same reasoning, and they never reach this mechanism anyway (Playwright's own matcher machinery).
+- **A no-argument `page.frameLocator()` (Playwright 1.63+) on a page with more than one frame** — "any frame" can't be narrowed to the one you meant when the target selector is broken, so healing steps aside rather than risk fixing against the wrong document. A single-frame page heals fine; for multi-frame pages, name the frame: `page.frameLocator('#id')`.
 
 ## Beyond selectors
 
