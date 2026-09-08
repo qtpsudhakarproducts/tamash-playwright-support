@@ -12,7 +12,7 @@ New TypeScript capabilities land on npm's `beta` tag first:
 npm install tamash-playwright@beta
 ```
 
-## Highlights — 0.12.0 (TypeScript, beta)
+## Highlights — 0.12.0 (TypeScript)
 
 **Playwright 1.63 support.** Verified against `@playwright/test` 1.63 — existing iframe healing and the wider healing suite are unchanged. `peerDependencies` stays `>=1.40.0`, so no upgrade is forced on you.
 

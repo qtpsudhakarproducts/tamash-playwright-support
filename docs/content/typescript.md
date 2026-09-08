@@ -2,7 +2,7 @@
 
 TypeScript with the native **Playwright Test** runner is the primary, most complete integration — the [Getting Started](installation.html) and [Guides](how-healing-works.html) sections are written against it.
 
-Current version on npm: **`0.11.0`** (`npm install tamash-playwright@beta` for the next one). See [Release notes](release-notes.html).
+Current version on npm: **`0.12.0`** (`npm install tamash-playwright@beta` for the next one). See [Release notes](release-notes.html).
 
 ## Setup, in short
 
