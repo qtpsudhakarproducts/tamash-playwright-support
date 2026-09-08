@@ -12,6 +12,12 @@ New TypeScript capabilities land on npm's `beta` tag first:
 npm install tamash-playwright@beta
 ```
 
+## Highlights — 0.12.0 (TypeScript, beta)
+
+**Playwright 1.63 support.** Verified against `@playwright/test` 1.63 — existing iframe healing and the wider healing suite are unchanged. `peerDependencies` stays `>=1.40.0`, so no upgrade is forced on you.
+
+**Healing through Playwright 1.63's no-argument `page.frameLocator()`.** 1.63 lets you write `page.frameLocator()` with no selector to mean "any frame on the page." A broken locator reached that way now heals when the page has a single frame. On a page with several frames the healer can't tell which one you meant, so it steps aside cleanly — your original error is reported, never a wrong-frame guess. For healable multi-frame work, name the frame: `page.frameLocator('#id')`. See [Writing tests](writing-tests.html) and [How healing works](how-healing-works.html#what-is-never-healed).
+
 ## Highlights — 0.11.0 (TypeScript)
 
 **`doctor` now tells you *why* a provider failed, and the fix.** Not "no valid response" any more — it's `not-installed` (with the exact `npm install`), `not-authenticated` (`claude login` / check the key / over quota), `timeout` (raise `actionTimeout`), `bad-model`, `network`, or `bad-response`. The raw error is printed underneath. See [Troubleshooting](troubleshooting.html).
