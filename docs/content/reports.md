@@ -61,4 +61,4 @@ export default defineConfig({
 });
 ```
 
-Zero configuration for the self-healing side: it reads the `self-healing-<action>` JSON attachment described above straight off the test result, so installing both packages is the entire integration. Output is one self-contained `index.html` plus `history.json` — no server, safe to open via `file://` or host anywhere. [Live sample report](https://qtpsudhakarproducts.github.io/tamash-playwright-dashboard/).
+Zero configuration for the self-healing side: it reads the `self-healing-<action>` JSON attachment described above straight off the test result, so installing both packages is the entire integration. Output is one self-contained `index.html` plus `history.json` — no server, safe to open via `file://` or host anywhere. [Live sample report](https://qtpsudhakarproducts.github.io/tamash-playwright-dashboard/) (synthetic demo data) · [live from the TypeScript sample project](https://qtpsudhakarproducts.github.io/tamash-playwright-typescript-playwright/dashboard/index.html) (real heals from CI, growing every run).
