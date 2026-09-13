@@ -16,7 +16,9 @@ npm install tamash-playwright@beta
 
 **Playwright 1.63 support.** Verified against `@playwright/test` 1.63 — existing iframe healing and the wider healing suite are unchanged. `peerDependencies` stays `>=1.40.0`, so no upgrade is forced on you.
 
-**Healing through Playwright 1.63's no-argument `page.frameLocator()`.** 1.63 lets you write `page.frameLocator()` with no selector to mean "any frame on the page." A broken locator reached that way now heals when the page has a single frame. On a page with several frames the healer can't tell which one you meant, so it steps aside cleanly — your original error is reported, never a wrong-frame guess. For healable multi-frame work, name the frame: `page.frameLocator('#id')`. See [Writing tests](writing-tests.html) and [How healing works](how-healing-works.html#what-is-never-healed).
+**Healing through Playwright 1.63's no-argument `page.frameLocator()`.** 1.63 lets you write `page.frameLocator()` with no selector to mean "any frame on the page." A broken locator reached that way now heals to a real, persistable selector when the page has a single frame — identical to what an explicit `page.frameLocator('#id')` produces, `apply-heals` included. On a page with several frames the healer can't tell which one you meant, so it steps aside cleanly — your original error is reported, never a wrong-frame guess. For healable multi-frame work, name the frame: `page.frameLocator('#id')`. See [Writing tests](writing-tests.html) and [How healing works](how-healing-works.html#what-is-never-healed).
+
+**New companion package: [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard).** A zero-config Playwright reporter — pass-rate trends, per-test history, and a Self-Healing Analytics page read straight from this package's own heal reports. See [Reports & logs](reports.html#trends-across-runs-tamash-playwright-dashboard) for setup, or the [live dashboard](https://qtpsudhakarproducts.github.io/tamash-playwright-typescript-playwright/dashboard/index.html) generated from the TypeScript sample project's own CI runs.
 
 ## Highlights — 0.11.0 (TypeScript)
 
