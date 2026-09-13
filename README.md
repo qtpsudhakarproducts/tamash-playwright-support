@@ -27,6 +27,12 @@ This repo is the **home for documentation and support**. The library source live
 | Python | `tamash-playwright` | [PyPI](https://pypi.org/project/tamash-playwright/) |
 | Java | `io.github.qtpsudhakarproducts:tamash-playwright` | [Maven Central](https://central.sonatype.com/artifact/io.github.qtpsudhakarproducts/tamash-playwright) |
 
+### Companion packages
+
+| Package | What it adds | Registry |
+|---|---|---|
+| [`tamash-playwright-dashboard`](https://github.com/qtpsudhakarproducts/tamash-playwright-dashboard) | A zero-config Playwright reporter: pass-rate trends, per-test history, Test Health analytics, and — reading `tamash-playwright`'s own heal reports — a Self-Healing Analytics page (heal counts, token usage, every heal event). [Live sample](https://qtpsudhakarproducts.github.io/tamash-playwright-dashboard/). | [npm](https://www.npmjs.com/package/tamash-playwright-dashboard) |
+
 ## Working examples
 
 | Language / Framework | Repo |

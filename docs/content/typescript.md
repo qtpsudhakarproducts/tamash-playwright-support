@@ -24,6 +24,7 @@ Then a `.env` with `HEALER_PROVIDER` + its key ([Installation](installation.html
 - **`apply-heals`, `init-skill`, and the agent skill** are TypeScript CLI features — see [CLI commands](cli.html).
 - **Non-`@playwright/test` runners** (Cucumber, Jest, a plain script) — the import swap still works; add `closeCopilotSubscriptionClient()` to teardown if you use `copilot-subscription`. See [Running in CI](ci.html#non-playwright-runners).
 - **`getDurable()`** on any locator — [Writing tests](writing-tests.html#getting-a-durable-locator-on-demand-getdurable).
+- **Trend dashboard** — [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard) is a separate reporter package that reads this package's heal reports with zero configuration: pass-rate trends, per-test history, and a Self-Healing Analytics page. See [Reports & logs](reports.html#trends-across-runs-tamash-playwright-dashboard).
 
 ## Working examples
 

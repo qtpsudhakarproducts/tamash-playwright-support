@@ -42,3 +42,23 @@ A not-healed line names the stage:
 | `provider_error` | the provider call itself failed (network, aborted at the timeout, unparseable) |
 | `unbuildable_suggestion` | the model's answer couldn't be turned into a working locator |
 | `replay_failed` | a durable locator was built, but replaying the action on it still failed |
+
+## Trends across runs: `tamash-playwright-dashboard`
+
+Everything above is per-run. [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard) is a separate Playwright reporter package (own `npm install`, own npm listing — TypeScript only, since it's a Playwright reporter) that tracks history across runs: pass-rate trends, per-test history, step-level detail with real locators and source locations, and a Test Health view (Newly Failed, Newly Fixed, Still Failing with fail streaks, Flaky). Specific to this package: a **Self-Healing Analytics** page — tests/elements healed, token usage per run and cumulatively with a trend chart, and every heal event across your recorded history.
+
+```sh
+npm install -D tamash-playwright-dashboard
+```
+
+```ts
+// playwright.config.ts
+export default defineConfig({
+  reporter: [
+    ['list'],
+    ['tamash-playwright-dashboard'],
+  ],
+});
+```
+
+Zero configuration for the self-healing side: it reads the `self-healing-<action>` JSON attachment described above straight off the test result, so installing both packages is the entire integration. Output is one self-contained `index.html` plus `history.json` — no server, safe to open via `file://` or host anywhere. [Live sample report](https://qtpsudhakarproducts.github.io/tamash-playwright-dashboard/).
