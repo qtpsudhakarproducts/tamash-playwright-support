@@ -66,9 +66,33 @@ Pass the action you're about to do (`getDurable('fill')`) so it can guess a role
 
 ## What else heals — no extra setup
 
+**The rule that decides all of this**: if `browser`, `context`, or `page` came from Playwright's own fixtures — destructured from a test/`beforeAll`/`beforeEach` callback, e.g. `test('...', async ({ browser }) => {...})` — everything built from it heals automatically, no matter how many hops away: `browser.newContext()` → `.newPage()`, stashed in a variable, reused across other tests, with `storageState`, whatever. If it *didn't* come from a fixture — a browser launched directly with `chromium.launch()`, or anything built inside `globalSetup` — it needs manual wrapping; see [Building a context/page outside the fixture system](#building-a-contextpage-outside-the-fixture-system) below.
+
 - **Popups & new tabs** — a page from `context.newPage()`, `window.open`, a `target="_blank"` link, or `context.waitForEvent('page')` / `page.on('popup', …)` is just as healing-aware as your main `page`.
+- **A context/page built from `browser` in `test.beforeAll`** — the common "log in once, reuse the session across every test in the file" pattern — `test.beforeAll(async ({ browser }) => { context = await browser.newContext(); page = await context.newPage(); })` — heals too, per the rule above.
 - **`<iframe>` content** — `page.frameLocator('#f')` and anything chained off it, scoped to the iframe's document. Playwright 1.63's no-argument `page.frameLocator()` ("match in any frame") also heals when the page has a single frame; with several frames present it can't be told which one you meant, so healing steps aside cleanly rather than guess — pass an explicit `frameLocator('#f')` there.
 - **Most of the API surface** — not just clicks and fills. `dragTo` / `drop` and `waitFor` are deliberately excluded (see [How healing works](how-healing-works.html#what-is-never-healed)), but still reported honestly on failure.
+
+## Building a context/page outside the fixture system
+
+Two real patterns fall outside the rule above:
+
+- **A browser launched directly**, not obtained from a fixture — `import { chromium } from '@playwright/test'; const browser = await chromium.launch();`. This `browser` never passed through the test fixtures, so there's nothing to wrap it automatically.
+- **`globalSetup`** (the `globalSetup` option in `playwright.config.ts`) runs as its own isolated script, outside the test runner and its fixtures entirely — typically used to log in once and save `storageState.json` for every test to reuse via `test.use({ storageState: 'state.json' })`. Any page actions performed there aren't healing-aware either.
+
+For either case, wrap the object yourself with the same functions the package uses internally — exported from the package root for exactly this:
+
+```ts
+import { chromium } from '@playwright/test';
+import { bindContext, bindPageActions } from 'tamash-playwright';
+
+const browser = await chromium.launch();
+const context = bindContext(await browser.newContext());
+const page = await context.newPage(); // already healing-aware — bindContext() wraps newPage() too
+// or, wrapping a page directly: const page = bindPageActions(await context.newPage());
+```
+
+`storageState` itself needs no special handling once the *test* context/page consuming it comes from the normal fixtures — only the one-off script that generates it in `globalSetup` needs the manual wrapping above, and only if you want that login flow itself to heal.
 
 ## Not using `@playwright/test` as the runner?
 
