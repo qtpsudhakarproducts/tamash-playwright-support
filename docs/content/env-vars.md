@@ -9,6 +9,7 @@ Loaded from a `.env` in your project root — both TypeScript and Python use thi
 | `HEALER_ENABLED` | `true` | Master switch. Anything other than `false` / `0` leaves it on. |
 | `HEALER_PROVIDER` | *(unset — healing off)* | `ollama` \| `openai` \| `anthropic` \| `gemini` \| `claude-subscription` \| `copilot-subscription` \| `ollama-local` \| `tamash` \| `kiro-subscription` \| `codex-subscription` \| `cursor-subscription` |
 | `HEALER_ACTION_RECOVERY_ENABLED` | `false` | Enable the [action-recovery](action-recovery.html) layer. |
+| `FAILURE_ANALYSIS_ENABLED` | `true` | **TypeScript only.** Classifies a genuinely-failed test (every retry exhausted) as `likely-defect` / `likely-wrong-locator` / `likely-timing-or-environment` / `inconclusive`. On by default, independent of `HEALER_ENABLED` — anything other than `false` / `0` leaves it on. See [Reports](reports.html#understanding-why-a-test-failed). |
 
 ## Per provider
 

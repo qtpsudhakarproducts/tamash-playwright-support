@@ -12,6 +12,12 @@ New TypeScript capabilities land on npm's `beta` tag first:
 npm install tamash-playwright@beta
 ```
 
+## Highlights — 0.13.0-beta (TypeScript)
+
+**AI-powered analysis of why a test failed.** New, on by default (`FAILURE_ANALYSIS_ENABLED`) — once a test's retries are exhausted and it's still failing, classifies it as `likely-defect`, `likely-wrong-locator`, `likely-timing-or-environment`, or `inconclusive`, so you know whether it's worth filing a bug, fixing a stale selector, or investigating flakiness. Covers any final failure, not just `expect()` — an action healing already tried and reported on is folded into the same classification instead of explained twice. No reporter to add; reuses whichever `HEALER_PROVIDER` is already configured. See [Reports & logs](reports.html#understanding-why-a-test-failed).
+
+**A `context`/`page` built off `browser` in `test.beforeAll` now heals.** The common "log in once, reuse the session across every test in the file" pattern — `test.beforeAll(async ({ browser }) => { context = await browser.newContext(); page = await context.newPage(); })` — previously bypassed healing entirely. Now covered the same as `context`/`page` fixtures. See [Writing tests](writing-tests.html).
+
 ## Highlights — 0.12.0 (TypeScript)
 
 **Playwright 1.63 support.** Verified against `@playwright/test` 1.63 — existing iframe healing and the wider healing suite are unchanged. `peerDependencies` stays `>=1.40.0`, so no upgrade is forced on you.

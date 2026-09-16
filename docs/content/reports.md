@@ -43,6 +43,27 @@ A not-healed line names the stage:
 | `unbuildable_suggestion` | the model's answer couldn't be turned into a working locator |
 | `replay_failed` | a durable locator was built, but replaying the action on it still failed |
 
+## Understanding why a test failed
+
+**TypeScript only.** Healing covers **actions** — `expect()` assertions are never touched, since silently "fixing" one could mask a real bug. Once a test's retries are exhausted and it's still failing, a separate capability classifies *why*, on by default (`FAILURE_ANALYSIS_ENABLED`, see [Environment variables](env-vars.html)): `likely-defect`, `likely-wrong-locator`, `likely-timing-or-environment`, or `inconclusive`, with a short explanation. No reporter to add — it runs the moment `test` is imported, reusing whichever `HEALER_PROVIDER` is already configured (`tamash` always declines — classifying a failure needs reasoning, not text matching).
+
+Covers any final failure, not just `expect()` — an action healing already tried and reported on (its own `self-heal-failed` annotation) is folded into the same classification, using healing's own diagnosis (provider, failure stage, its reason) as extra context, rather than skipped or explained a second time.
+
+```
+[self-healer] checkout > pays with a saved card — failure analysis: likely-defect — The "Order confirmed" heading never appeared on any attempt; the page consistently shows a generic error banner instead.
+```
+
+| Verdict | Meaning |
+|---|---|
+| `likely-defect` | the app looks broken (error state, wrong content, a crash) — worth filing a bug |
+| `likely-wrong-locator` | something that plausibly *is* the target exists on the page, under different text/structure — fix the test |
+| `likely-timing-or-environment` | looks like a loading race, or the failure varied between attempts — investigate stability, not the app or selector |
+| `inconclusive` | the evidence doesn't point any direction |
+
+Spends a real AI call on every genuinely-failed test (unlike healing, which only spends when an action fails). Reported the same way as healing's own reports: a `failure-analysis` annotation, a `failure-analysis-tokens-used` annotation (its own type, separate from healing's `llm-tokens-used`, so the two costs can be compared), and a `failure-analysis` JSON attachment with every attempt's error and page snapshot. `expect()` itself is never touched — this only ever adds information next to a failure that already happened.
+
+"Exactly once, on the final attempt" is reliable when retries come from `playwright.config.ts`'s top-level `retries:` (or `--retries`). A per-file `test.describe.configure({ retries })` override isn't visible to it, so that case analyzes every failing attempt instead of just the last — still safe, no crash or wrong verdict, just extra AI calls for that test.
+
 ## Trends across runs: `tamash-playwright-dashboard`
 
 Everything above is per-run. [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard) is a separate Playwright reporter package (own `npm install`, own npm listing — TypeScript only, since it's a Playwright reporter) that tracks history across runs: pass-rate trends, per-test history, step-level detail with real locators and source locations, and a Test Health view (Newly Failed, Newly Fixed, Still Failing with fail streaks, Flaky). Specific to this package: a **Self-Healing Analytics** page — tests/elements healed, token usage per run and cumulatively with a trend chart, and every heal event across your recorded history.
