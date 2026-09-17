@@ -27,7 +27,7 @@ The healer **declines** rather than pick wrong. A paraphrased description, a dea
 ## When a fix needs a second look — `needsReview`
 
 - **Not flagged** — the selector came from the element's own identity (step 1). As solid as anything you'd write by hand.
-- **`needsReview`** — it came from a nearby label (step 2) or a positional fallback (step 3). Correct *right now* (verified live) but worth a glance before you rely on it long term.
+- **`needsReview`** — it came from a nearby label (step 2) or a positional fallback (step 3). Correct right now; the page could change in a way that breaks it later, so review before relying on it long term.
 
 Shown as `needsReview=yes` in the console line, a `self-heal-needs-review` annotation in the HTML report, and a `[NEEDS REVIEW]` tag in `apply-heals` output. It's informational, never a gate.
 

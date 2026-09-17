@@ -157,7 +157,7 @@ username.fill("testadmin");
 
 This step is optional, but recommended — without it, the healer has to guess purely from a broken CSS selector, which gives it a lot less to work with.
 
-One Java-specific limitation worth knowing: for `getByRole(...)`, the auto-derived description (used when you don't call `.describe()`) only captures the role itself (e.g. `role:button`), not the accessible name you passed via `GetByRoleOptions.setName(...)` — Java's generated `Options` classes don't expose a way to read that value back out. If you rely on `getByRole` with a name and want the full description quality, add `.describe("...")` explicitly.
+Java-specific limitation: for `getByRole(...)`, the auto-derived description (used when you don't call `.describe()`) only captures the role itself (e.g. `role:button`), not the accessible name you passed via `GetByRoleOptions.setName(...)` — Java's generated `Options` classes don't expose a way to read that value back out. If you rely on `getByRole` with a name and want the full description quality, add `.describe("...")` explicitly.
 
 ## What gets healed (and what doesn't)
 

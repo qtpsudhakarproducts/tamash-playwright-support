@@ -289,7 +289,7 @@ def test_login_with_base_fixtures(page, login_page, dashboard_page):
     dashboard_page.verify_loaded()
 ```
 
-This needs no `tamash-playwright`-specific code at all — it's the same fixture-composition pattern you'd write against plain Playwright. The reason it's worth calling out explicitly: `login_page`/`dashboard_page` both depend on `page`, and by Step 3 `page` is already the healing/reporting-wrapped one — so **any fixture layer you build on top of it inherits healing and reporting automatically, no matter how deep the composition goes**. If your project already has fixtures like this before adopting `tamash-playwright`, you don't need to touch them at all — the one `conftest.py` line from Step 3 is the only change anywhere in your test suite.
+This needs no `tamash-playwright`-specific code at all — it's the same fixture-composition pattern you'd write against plain Playwright. `login_page`/`dashboard_page` both depend on `page`, and by Step 3 `page` is already the healing/reporting-wrapped one, so **any fixture layer you build on top of it inherits healing and reporting automatically, no matter how deep the composition goes**. If your project already has fixtures like this before adopting `tamash-playwright`, you don't need to touch them — the one `conftest.py` line from Step 3 is the only change anywhere in your test suite.
 
 ## API testing
 
