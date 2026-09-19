@@ -7,7 +7,7 @@ Every healing attempt — succeeded or not — is recorded in three places.
 `npx playwright show-report` — no separate report to check.
 
 - **An annotation** on the test summarizing what happened: `Recovered using ollama:gpt-oss:120b (getByRole("button", { name: "Submit" }))`, or `self-heal-needs-review`, or `self-heal-failed`.
-- **A JSON attachment** (`self-healing-<action>`) with the full detail: provider, whether vision / action-recovery was involved, the suggested selector, token usage, and — if it didn't heal — the stage it stopped at (`ai_declined`, `replay_failed`, `provider_error`, …). Error text is plain (ANSI colour codes stripped, so it's readable rather than a wall of escape sequences).
+- **A JSON attachment** (`self-healing-<action>`) with the full detail: provider, whether vision / action-recovery was involved, the suggested selector, token usage, `identicalElements` when the element had identical siblings (TypeScript), and — if it didn't heal — the stage it stopped at (`ai_declined`, `replay_failed`, `provider_error`, …). Error text is plain (ANSI colour codes stripped, so it's readable rather than a wall of escape sequences).
 - **On a failed heal**, a second attachment (`self-healing-<action>-aria-snapshot`) with the exact accessibility tree the model reasoned over — the ground truth for "did it pick the wrong element, or pick right but the replay failed?"
 - **Where in your code** the locator was created — a test file or a Page Object, whichever it really is.
 
@@ -66,7 +66,7 @@ Spends a real AI call on every genuinely-failed test (unlike healing, which only
 
 ## Trends across runs: `tamash-playwright-dashboard`
 
-Everything above is per-run. [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard) is a separate Playwright reporter package (own `npm install`, own npm listing — TypeScript only, since it's a Playwright reporter) that tracks history across runs: pass-rate trends, per-test history, step-level detail with real locators and source locations, and a Test Health view (Newly Failed, Newly Fixed, Still Failing with fail streaks, Flaky). Specific to this package: a **Self-Healing Analytics** page — tests/elements healed, token usage per run and cumulatively with a trend chart, and every heal event across your recorded history.
+Everything above is per-run. [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard) is a separate Playwright reporter package (own `npm install`, own npm listing — TypeScript only, since it's a Playwright reporter) that tracks history across runs: pass-rate trends, per-test history, step-level detail with real locators and source locations, and a Test Health view (Newly Failed, Newly Fixed, Still Failing with fail streaks, Flaky). Specific to this package: a **Self-Healing Analytics** page (tests/elements healed, token usage per run and cumulatively with a trend chart, every heal event across your recorded history) and a **Failure Analytics** page — the free rule-based failure category for every failing test, plus, wherever this package's `failure-analysis` attachment is present, the AI verdict (`likely-defect`/`likely-wrong-locator`/`likely-timing-or-environment`/`inconclusive`) and explanation, searchable and filterable by verdict across all recorded runs. Each test's detail page also has a Documentation view that turns its step trace into plain-English preconditions/steps/postconditions, ready to paste into a defect report.
 
 ```sh
 npm install -D tamash-playwright-dashboard

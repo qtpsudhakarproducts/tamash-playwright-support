@@ -31,6 +31,12 @@ The healer **declines** rather than pick wrong. A paraphrased description, a dea
 
 Shown as `needsReview=yes` in the console line, a `self-heal-needs-review` annotation in the HTML report, and a `[NEEDS REVIEW]` tag in `apply-heals` output. It's informational, never a gate.
 
+A nearby-label selector (step 2) is verified in the exact form `apply-heals` writes to source. When the label text appears on more than one element, that form does not resolve to a single element and the next step is used instead (TypeScript).
+
+### Identical elements
+
+**TypeScript.** When several elements share the same role and accessible name and nothing on the page distinguishes them (for example two "Yes" buttons with no label, container or nearby text), the only selector that can be written is positional (`.first()`, `.nth(n)`). The heal is flagged `needsReview`, and the report records `identicalElements: { count, index, pickedBy }`: how many elements matched, which position was picked (1-based), and whether the text model (`ai`) or the vision fallback (`vision`) picked it. The review note states the same, for example: `2 identical elements match (button "Yes") and nothing on the page tells them apart. Picked #2 of 2 (by the AI). ... Verify this is the one you meant.` Hidden duplicates are not counted. `apply-heals` shows an `Identical` line for that fix. Positional heals are not replayed from the heal cache; each run heals them again.
+
 ## `getDurable()` on demand
 
 The same derivation is a method:

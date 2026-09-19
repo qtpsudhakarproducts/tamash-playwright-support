@@ -8,18 +8,38 @@ npx tamash-playwright apply-heals --dry-run  # preview the source changes
 npx tamash-playwright apply-heals            # write them
 ```
 
-Every run — dry or real — prints a table of exactly what it found before touching anything:
+Every run — dry or real — lists what it found before touching anything.
+
+**TypeScript** lists each change on its own lines, then the files that change and the tests to re-verify:
 
 ```
-Fixes (1)
-  ┌───────────────────────────┬──────────────────────────┬─────────────────────────────────────────────┬────────┐
-  │ Location                  │ Before                   │ After                                       │ Review │
-  ├───────────────────────────┼──────────────────────────┼─────────────────────────────────────────────┼────────┤
-  │ src/pages/loginpage.ts:11 │ .locator('input[name="…' │ .getByRole("textbox", { name: "Username" }) │ —      │
-  └───────────────────────────┴──────────────────────────┴─────────────────────────────────────────────┴────────┘
+Fixes (2, 1 needing review)
 
-1 fix(es) applied to 1 file(s), 0 skipped.
+  1. src/pages/loginpage.ts:11
+     Before  .locator('input[name="username"]')
+     After   .getByRole("textbox", { name: "Username" })
+
+  2. ⚠ tests/employee-id.spec.ts:31
+     Before  .getByPlaceholder('Employee')
+     After   .locator('div').filter({ hasText: 'Employee Id' }).getByRole('textbox')
+     Review  No stable identity of its own — durable selector anchors on nearby text instead. Please verify this still targets the right element if the page layout changes.
+
+Files to change
+
+  Page objects and helpers (1)
+    src/pages/loginpage.ts  1 fix
+
+  Test files (1)
+    tests/employee-id.spec.ts  1 fix
+
+Tests to re-verify
+  tests/employee-id.spec.ts:25
+  tests/login.spec.ts:7
 ```
+
+Fixes that could not be applied are listed under `Skipped`, each with its reason. When several elements on the page are identical and nothing distinguishes them, the fix can only be a position (`.first()`, `.nth(n)`); the fix then also shows an `Identical` line, for example `2 elements on the page are identical. #2 was picked by position (AI).` See [How healing works](how-healing-works.html#identical-elements).
+
+**Python** prints a table with `Location`, `Before`, `After` and `Review` columns.
 
 ## Proving the fix stands on its own
 
@@ -39,7 +59,7 @@ This re-runs **exactly the affected tests** with `HEALER_ENABLED=false`. A pass 
 - **Surgical edits.** `.describe('...')` and everything else on the line is untouched — only the `.locator(...)` / `.getByRole(...)` call is replaced.
 - **`needsReview` is not a gate.** A flagged fix is still applied; the flag just shows in the table and the reports.
 - **A real run asks for confirmation — at a real terminal only.** In CI / non-interactive it proceeds (no stdin). `--yes` skips the prompt at a terminal too.
-- **Every run leaves a report** — `.tamash-playwright/apply-heals-report.md` / `.json`, archived under `history/`.
+- **Every real run leaves a report** — `.tamash-playwright/apply-heals-report.md` / `.json`, archived under `history/`. In TypeScript, `--dry-run` writes `apply-heals-preview.md` / `.json` instead, headed "Nothing has been applied", and does not overwrite the latest report or add to `history/`.
 - **Always review before committing.** It rewrites source files. `git diff`, re-run, commit deliberately.
 
 ## In CI

@@ -29,7 +29,7 @@ A provider `[FAIL]` is one of: `not-installed` (with the exact `npm install` / v
 
 Rewrites broken locators to the selectors that healed at runtime. See [Making heals permanent](apply-heals.html).
 
-- `--dry-run` — preview the source changes (and `verify-heals.cjs`) without writing.
+- `--dry-run` — preview the source changes without writing source, the latest report, `history/` or `verify-heals.cjs`. TypeScript writes `apply-heals-preview.md` / `.json`.
 - `--logs-dir <path>` — merge every `heals.jsonl` found under `<path>` (any nesting) instead of the local log — for sharded CI.
 - `--yes` / `-y` — skip the confirmation prompt at a real terminal too (already skipped in CI / non-interactive).
 

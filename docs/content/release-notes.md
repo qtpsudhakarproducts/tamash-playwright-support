@@ -12,6 +12,18 @@ New TypeScript capabilities land on npm's `beta` tag first:
 npm install tamash-playwright@beta
 ```
 
+## Highlights — 0.15.0-beta (TypeScript)
+
+**`apply-heals` output lists each change on its own lines.** Each fix is shown with its `Before`, `After` and, when flagged, `Review` lines in full, followed by the files that change (page objects and helpers, then test files) and the tests to re-verify. See [Making heals permanent](apply-heals.html).
+
+**`apply-heals --dry-run` no longer overwrites the last report.** A dry run writes `apply-heals-preview.md` and `.json`, headed "Nothing has been applied". `apply-heals-report.*` and `history/` describe real runs only.
+
+**Identical elements are recorded.** When several elements are identical and only a positional selector can be written, the report records how many matched, which position was picked and whether the text model or vision picked it. See [How healing works](how-healing-works.html#identical-elements).
+
+**Fix: a nearby-text selector could match more than one element once written to source.** The healer now verifies that selector in the form `apply-heals` writes, and uses the next option when it does not resolve to exactly the target element.
+
+**The [AI agent skill](agent-skill.html) investigates tests that still fail after healing.** It classifies each failure, fixes what is safe to fix, verifies with healing off, and reports suspected defects for review.
+
 ## Highlights — 0.13.0-beta (TypeScript)
 
 **AI-powered analysis of why a test failed.** New, on by default (`FAILURE_ANALYSIS_ENABLED`) — once a test's retries are exhausted and it's still failing, classifies it as `likely-defect`, `likely-wrong-locator`, `likely-timing-or-environment`, or `inconclusive`, so you know whether it's worth filing a bug, fixing a stale selector, or investigating flakiness. Covers any final failure, not just `expect()` — an action healing already tried and reported on is folded into the same classification instead of explained twice. No reporter to add; reuses whichever `HEALER_PROVIDER` is already configured. See [Reports & logs](reports.html#understanding-why-a-test-failed).
