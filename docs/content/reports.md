@@ -7,7 +7,7 @@ Every healing attempt — succeeded or not — is recorded in three places.
 `npx playwright show-report` — no separate report to check.
 
 - **An annotation** on the test summarizing what happened: `Recovered using ollama:gpt-oss:120b (getByRole("button", { name: "Submit" }))`, or `self-heal-needs-review`, or `self-heal-failed`.
-- **A JSON attachment** (`self-healing-<action>`) with the full detail: provider, whether vision / action-recovery was involved, the suggested selector, token usage, `identicalElements` when the element had identical siblings (TypeScript), and — if it didn't heal — the stage it stopped at (`ai_declined`, `replay_failed`, `provider_error`, …). Error text is plain (ANSI colour codes stripped, so it's readable rather than a wall of escape sequences).
+- **A JSON attachment** (`self-healing-<action>`) with the full detail: provider, whether vision / action-recovery was involved, the selector that failed (`brokenSelector`, TypeScript), the suggested selector, token usage, `identicalElements` when the element had identical siblings (TypeScript), and — if it didn't heal — the stage it stopped at (`ai_declined`, `replay_failed`, `provider_error`, …). Error text is plain (ANSI colour codes stripped, so it's readable rather than a wall of escape sequences).
 - **On a failed heal**, a second attachment (`self-healing-<action>-aria-snapshot`) with the exact accessibility tree the model reasoned over — the ground truth for "did it pick the wrong element, or pick right but the replay failed?"
 - **Where in your code** the locator was created — a test file or a Page Object, whichever it really is.
 
@@ -45,7 +45,7 @@ A not-healed line names the stage:
 
 ## Understanding why a test failed
 
-**TypeScript only.** Healing covers **actions** — `expect()` assertions are never touched, since silently "fixing" one could mask a real bug. Once a test's retries are exhausted and it's still failing, a separate capability classifies *why*, on by default (`FAILURE_ANALYSIS_ENABLED`, see [Environment variables](env-vars.html)): `likely-defect`, `likely-wrong-locator`, `likely-timing-or-environment`, or `inconclusive`, with a short explanation. No reporter to add — it runs the moment `test` is imported, reusing whichever `HEALER_PROVIDER` is already configured (`tamash` always declines — classifying a failure needs reasoning, not text matching).
+**TypeScript only.** Healing covers **actions** — `expect()` assertions are never touched, since silently "fixing" one could mask a real bug. Once a test's retries are exhausted and it's still failing, a separate capability classifies *why*, on by default (`FAILURE_ANALYSIS_ENABLED`, see [Environment variables](env-vars.html)): `likely-defect`, `likely-wrong-locator`, `likely-timing-or-environment`, or `inconclusive`, with a short explanation. No reporter to add — it runs the moment `test` is imported, reusing whichever `HEALER_PROVIDER` is already configured (`tamash` always returns `inconclusive` — classifying a failure needs reasoning, not text matching).
 
 Covers any final failure, not just `expect()` — an action healing already tried and reported on (its own `self-heal-failed` annotation) is folded into the same classification, using healing's own diagnosis (provider, failure stage, its reason) as extra context, rather than skipped or explained a second time.
 
@@ -63,6 +63,17 @@ Covers any final failure, not just `expect()` — an action healing already trie
 Spends a real AI call on every genuinely-failed test (unlike healing, which only spends when an action fails). Reported the same way as healing's own reports: a `failure-analysis` annotation, a `failure-analysis-tokens-used` annotation (its own type, separate from healing's `llm-tokens-used`, so the two costs can be compared), and a `failure-analysis` JSON attachment with every attempt's error and page snapshot. `expect()` itself is never touched — this only ever adds information next to a failure that already happened.
 
 "Exactly once, on the final attempt" is reliable when retries come from `playwright.config.ts`'s top-level `retries:` (or `--retries`). A per-file `test.describe.configure({ retries })` override isn't visible to it, so that case analyzes every failing attempt instead of just the last — still safe, no crash or wrong verdict, just extra AI calls for that test.
+
+## Cucumber (TS)
+
+Under cucumber-js there is no Playwright HTML report and no `test.info()`, so the reports go through Cucumber's own attachments. No setup is needed: the package registers hooks named `tamash-playwright` with the running Cucumber instance.
+
+- `self-healing-<action>` (JSON) and, for a failed heal, `self-healing-<action>-aria-snapshot` are attached to the scenario, with the name in the attachment's `fileName`.
+- Failure analysis runs once, when a scenario fails on its final attempt, and is attached as `failure-analysis`. The page snapshot comes from the World's `page` property, taken right after the failing step.
+- There are no annotations; the JSON carries the same information.
+- `heals.jsonl` records the `.feature` file, scenario line and scenario name.
+
+Any formatter that shows attachments (`message`, `html`, `json`) includes them.
 
 ## Trends across runs: `tamash-playwright-dashboard`
 
