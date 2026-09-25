@@ -60,4 +60,4 @@ Issues are auto-labeled `lang: typescript|python|java` and `framework: playwrigh
 
 ---
 
-Free to use, including commercially. Source may not be copied, modified, redistributed, or resold without prior written permission — see each package's LICENSE. Questions: support@vibetestq.com.
+Free for personal and non-commercial use. Commercial use, including use on behalf of a company and training within or for a company, requires a paid commercial license under a written agreement with VibeTestQ. A company may evaluate a package for one day before licensing. Source may not be copied, modified, redistributed, or resold without prior written permission. These terms apply to versions released on or after 26 September 2026; see each package's LICENSE. Questions: support@vibetestq.com.
