@@ -7,7 +7,9 @@
     "build": "node build.mjs"
   },
   "dependencies": {
+    "highlight.js": "^11.12.0",
     "marked": "^14.1.4",
-    "marked-gfm-heading-id": "^4.1.1"
+    "marked-gfm-heading-id": "^4.1.1",
+    "marked-highlight": "^2.2.4"
   }
 }
