@@ -27,7 +27,7 @@ Healing in the TypeScript package needs the license key of your project. In the 
 TAMASH_LICENSE_KEY=TAMASH1.xxxxxxxx.xxxxxxxx
 ```
 
-The key is checked on your machine, with no network call. With no key, healing works for 14 days from the first use in the project, then it is off. A trial key allows 20 heals. An expired key works for its grace period. When healing is off because of the key, a failed action fails as it does in plain Playwright, and the console says why. `npx tamash-playwright doctor` shows the state of the key. The Python and Java packages do not check a key yet.
+The key is checked on your machine, with no network call. With no key, healing works for 14 days from the first use in the project, then it is off. A trial key allows 20 heals in total, and a paid key includes a number of heals each month; healing is off until the 1st of the next month once they are used. An expired key works for its grace period. When healing is off because of the key, a failed action fails as it does in plain Playwright, and the console says why. `npx tamash-playwright doctor` shows the state of the key. The Python and Java packages do not check a key yet.
 
 ## 2. Connect an AI provider
 

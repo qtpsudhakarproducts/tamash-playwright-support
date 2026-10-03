@@ -15,7 +15,7 @@ The license key stopped healing. The console line that starts with `[tamash-play
 - **No `TAMASH_LICENSE_KEY`, and the 14 days without one have ended.** Set the key of your project (portal, **Projects**) in `.env` and in the CI secrets.
 - **The key is not valid.** Copy it again from the portal. A key copied with a missing part, or one made for another product, is refused.
 - **The key expired.** Renew the plan in the portal; a project key stops working a number of days after it expires (none for a trial).
-- **A trial key has used its heals.** The count is in `.tamash-playwright/license-heals.jsonl`. Upgrade the plan to get a key with no heal limit.
+- **The heals of the key are used.** A trial key has 20 in total; a paid key has a number each calendar month and healing starts again on the 1st. The count is in `.tamash-playwright/license-heals.jsonl`. Upgrade the plan or add heals in the portal.
 
 `npx tamash-playwright doctor` shows the same state under License.
 
