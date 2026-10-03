@@ -6,6 +6,7 @@ Loaded from a `.env` in your project root — both TypeScript and Python use thi
 
 | Variable | Default | |
 |---|---|---|
+| `TAMASH_LICENSE_KEY` | *(unset)* | **TypeScript only.** The key of your project from the TAMASH portal. Without one, healing works for 14 days from first use, then it is off. See [Installation](installation.html). |
 | `HEALER_ENABLED` | `true` | Master switch. Anything other than `false` / `0` leaves it on. |
 | `HEALER_PROVIDER` | *(unset — healing off)* | `ollama` \| `openai` \| `anthropic` \| `gemini` \| `claude-subscription` \| `copilot-subscription` \| `ollama-local` \| `tamash` \| `kiro-subscription` \| `codex-subscription` \| `cursor-subscription` |
 | `HEALER_ACTION_RECOVERY_ENABLED` | `false` | Enable the [action-recovery](action-recovery.html) layer. |

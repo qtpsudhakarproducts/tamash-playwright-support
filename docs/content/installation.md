@@ -19,6 +19,16 @@ Set `NPM_TOKEN` to the token before running `npm install`. For a token or a lice
 
 The package was published as `tamash-playwright` up to 0.15.0-beta.1. To move, replace the package in `package.json` and change imports from `'tamash-playwright'` to `'@vibetestq/tamash-playwright'`. The `npx tamash-playwright` commands are unchanged.
 
+## License key (TypeScript)
+
+Healing in the TypeScript package needs the license key of your project. In the TAMASH portal, open **Projects**, copy the key of your project, and set it as `TAMASH_LICENSE_KEY` in `.env` and in your CI secrets:
+
+```sh
+TAMASH_LICENSE_KEY=TAMASH1.xxxxxxxx.xxxxxxxx
+```
+
+The key is checked on your machine, with no network call. With no key, healing works for 14 days from the first use in the project, then it is off. A trial key allows 20 heals. An expired key works for its grace period. When healing is off because of the key, a failed action fails as it does in plain Playwright, and the console says why. `npx tamash-playwright doctor` shows the state of the key. The Python and Java packages do not check a key yet.
+
 ## 2. Connect an AI provider
 
 `tamash-playwright` needs a model to decide where a broken element went. Create a `.env` in your project root:

@@ -8,6 +8,17 @@ Run `npx tamash-playwright doctor` first — it names most of these.
 - **`HEALER_ENABLED=false`** somewhere (a shell export, a CI env) overriding `.env`.
 - **You imported `test` from `@playwright/test`**, not `tamash-playwright`, in the spec file.
 
+## Heals show `stage=license`, or "Healing is off" (TypeScript)
+
+The license key stopped healing. The console line that starts with `[tamash-playwright]` says which case it is:
+
+- **No `TAMASH_LICENSE_KEY`, and the 14 days without one have ended.** Set the key of your project (portal, **Projects**) in `.env` and in the CI secrets.
+- **The key is not valid.** Copy it again from the portal. A key copied with a missing part, or one made for another product, is refused.
+- **The key expired.** Renew the plan in the portal; a project key stops working a number of days after it expires (none for a trial).
+- **A trial key has used its heals.** The count is in `.tamash-playwright/license-heals.jsonl`. Upgrade the plan to get a key with no heal limit.
+
+`npx tamash-playwright doctor` shows the same state under License.
+
 ## Heals show `stage=no_snapshot`
 
 `actionTimeout` is missing or too close to `timeout` — the broken locator burns the whole test budget before failing, leaving no time to heal. Set `actionTimeout` well below `timeout`. See [Installation](installation.html#3-set-actiontimeout).
