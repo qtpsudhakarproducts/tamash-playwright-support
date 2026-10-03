@@ -30,6 +30,7 @@
         { "slug": "providers-subscription", "title": "Claude / Copilot subscription" },
         { "slug": "providers-cli-subscription", "title": "Kiro / Codex / Cursor" },
         { "slug": "provider-tamash", "title": "tamash — rule-based, no AI" },
+        { "slug": "provider-tamash-cloud", "title": "tamash-cloud — no AI key" },
         { "slug": "provider-ollama-local", "title": "ollama-local" }
       ]
     },
