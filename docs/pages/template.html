@@ -4,69 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__TITLE__</title>
-<meta name="description" content="Plug-and-play self-healing for Playwright, across TypeScript, Python, and Java.">
+<meta name="description" content="__DESC__">
+<meta property="og:title" content="__TITLE__">
+<meta property="og:description" content="__DESC__">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem('tp-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 </head>
 <body>
-<header class="topbar">
-  <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-  <a class="brand" href="index.html">tamash-<span>playwright</span></a>
-  <nav class="topbar-links">
-    <a href="intro.html">Docs</a>
-    <a href="typescript.html">TypeScript</a>
-    <a href="python.html">Python</a>
-    <a href="java.html">Java</a>
-    <a href="https://www.npmjs.com/package/tamash-playwright">npm</a>
-    <a href="https://github.com/qtpsudhakarproducts/tamash-playwright-support">GitHub</a>
-    <a class="cta" href="https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues/new/choose">Get support</a>
-  </nav>
-</header>
-
+__HEADER__
 <div class="layout">
   __SIDEBAR__
-  <main class="content">
+  <main class="content" id="main">
     <article class="doc">
+      <p class="crumbs">__CRUMBS__</p>
 __CONTENT__
     </article>
+    <p class="edit-link"><a href="__EDIT__">Edit this page on GitHub</a></p>
     __PAGER__
-    <footer class="doc-footer">
-      Questions or bugs? <a href="https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues/new/choose">Open an issue</a>
-      &nbsp;·&nbsp; Built from <code>tamash-playwright-support/docs</code>.
-    </footer>
   </main>
   __TOC__
 </div>
-
-<script>
-  (function () {
-    var btn = document.querySelector('.menu-toggle');
-    var sidebar = document.querySelector('.sidebar');
-    if (btn && sidebar) {
-      btn.addEventListener('click', function () {
-        var open = sidebar.classList.toggle('open');
-        btn.setAttribute('aria-expanded', String(open));
-      });
-    }
-    // Highlight the current TOC entry while scrolling.
-    var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
-    if (links.length && 'IntersectionObserver' in window) {
-      var byId = {};
-      links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          var a = byId[e.target.id];
-          if (a && e.isIntersecting) {
-            links.forEach(function (x) { x.classList.remove('active'); });
-            a.classList.add('active');
-          }
-        });
-      }, { rootMargin: '0px 0px -75% 0px' });
-      Object.keys(byId).forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) obs.observe(el);
-      });
-    }
-  })();
-</script>
+__FOOTER__
+<script src="search-index.js"></script>
+<script src="site.js"></script>
 </body>
 </html>
