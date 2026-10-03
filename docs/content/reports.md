@@ -77,10 +77,10 @@ Any formatter that shows attachments (`message`, `html`, `json`) includes them.
 
 ## Trends across runs: `tamash-playwright-dashboard`
 
-Everything above is per-run. [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard) is a separate Playwright reporter package (own `npm install`, own npm listing — TypeScript only, since it's a Playwright reporter) that tracks history across runs: pass-rate trends, per-test history, step-level detail with real locators and source locations, and a Test Health view (Newly Failed, Newly Fixed, Still Failing with fail streaks, Flaky). Specific to this package: a **Self-Healing Analytics** page (tests/elements healed, token usage per run and cumulatively with a trend chart, every heal event across your recorded history) and a **Failure Analytics** page — the free rule-based failure category for every failing test, plus, wherever this package's `failure-analysis` attachment is present, the AI verdict (`likely-defect`/`likely-wrong-locator`/`likely-timing-or-environment`/`inconclusive`) and explanation, searchable and filterable by verdict across all recorded runs. Each test's detail page also has a Documentation view that turns its step trace into plain-English preconditions/steps/postconditions, ready to paste into a defect report.
+Everything above is per-run. `@vibetestq/tamash-playwright-dashboard` is a separate Playwright reporter package (own `npm install`, own npm listing — TypeScript only, since it's a Playwright reporter) that tracks history across runs: pass-rate trends, per-test history, step-level detail with real locators and source locations, and a Test Health view (Newly Failed, Newly Fixed, Still Failing with fail streaks, Flaky). Specific to this package: a **Self-Healing Analytics** page (tests/elements healed, token usage per run and cumulatively with a trend chart, every heal event across your recorded history) and a **Failure Analytics** page — the free rule-based failure category for every failing test, plus, wherever this package's `failure-analysis` attachment is present, the AI verdict (`likely-defect`/`likely-wrong-locator`/`likely-timing-or-environment`/`inconclusive`) and explanation, searchable and filterable by verdict across all recorded runs. Each test's detail page also has a Documentation view that turns its step trace into plain-English preconditions/steps/postconditions, ready to paste into a defect report.
 
 ```sh
-npm install -D tamash-playwright-dashboard
+npm install -D @vibetestq/tamash-playwright-dashboard
 ```
 
 ```ts
@@ -88,7 +88,7 @@ npm install -D tamash-playwright-dashboard
 export default defineConfig({
   reporter: [
     ['list'],
-    ['tamash-playwright-dashboard'],
+    ['@vibetestq/tamash-playwright-dashboard'],
   ],
 });
 ```

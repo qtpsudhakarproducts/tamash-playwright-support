@@ -3,7 +3,7 @@
 Once the [import is swapped](installation.html#5-swap-the-import), you write tests exactly as before.
 
 ```ts
-import { test, expect } from 'tamash-playwright';
+import { test, expect } from '@vibetestq/tamash-playwright';
 
 test('logs in', async ({ page }) => {
   await page.goto('/');
@@ -36,7 +36,7 @@ export class LoginPage {
 
 ```ts
 // login.spec.ts — the only change is here
-import { test } from 'tamash-playwright';
+import { test } from '@vibetestq/tamash-playwright';
 import { LoginPage } from './pages/LoginPage';
 ```
 
@@ -84,7 +84,7 @@ For either case, wrap the object yourself with the same functions the package us
 
 ```ts
 import { chromium } from '@playwright/test';
-import { bindContext, bindPageActions } from 'tamash-playwright';
+import { bindContext, bindPageActions } from '@vibetestq/tamash-playwright';
 
 const browser = await chromium.launch();
 const context = bindContext(await browser.newContext());

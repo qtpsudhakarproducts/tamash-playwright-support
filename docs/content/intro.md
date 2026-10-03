@@ -12,7 +12,7 @@ No rewrites, no new framework. In most projects it's **one import swap** or **on
 // before
 import { test, expect } from '@playwright/test';
 // after
-import { test, expect } from 'tamash-playwright';
+import { test, expect } from '@vibetestq/tamash-playwright';
 ```
 
 ## Two levels of resilience

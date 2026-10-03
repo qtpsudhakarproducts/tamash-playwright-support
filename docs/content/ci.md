@@ -69,7 +69,7 @@ Add a job after `test` that downloads the heal-log artifact, applies the fixes t
 `copilot-subscription` keeps a shared subprocess open across calls for performance. Playwright's own runner force-exits regardless — invisible there — but a runner that doesn't (Cucumber, a plain script) will hang after your tests finish. Call this from its teardown hook (a no-op if `copilot-subscription` was never used):
 
 ```ts
-import { closeCopilotSubscriptionClient } from 'tamash-playwright';
+import { closeCopilotSubscriptionClient } from '@vibetestq/tamash-playwright';
 // Cucumber AfterAll, Jest afterAll, your script's cleanup, …
 await closeCopilotSubscriptionClient();
 ```

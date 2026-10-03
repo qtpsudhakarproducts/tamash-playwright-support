@@ -2,18 +2,18 @@
 
 TypeScript with the native **Playwright Test** runner is the primary, most complete integration — the [Getting Started](installation.html) and [Guides](how-healing-works.html) sections are written against it.
 
-Current version on npm: **`0.12.0`** (`npm install tamash-playwright@beta` for the next one). See [Release notes](release-notes.html).
+Current version: **`0.15.0`**, published as the restricted package `@vibetestq/tamash-playwright` (see [Installation](installation.html) for access). See [Release notes](release-notes.html).
 
 ## Setup, in short
 
 ```sh
-npm install tamash-playwright
+npm install @vibetestq/tamash-playwright
 npm install -D @playwright/test
 ```
 
 ```ts
 // spec files only — Page Objects don't change
-import { test, expect } from 'tamash-playwright';
+import { test, expect } from '@vibetestq/tamash-playwright';
 ```
 
 Then a `.env` with `HEALER_PROVIDER` + its key ([Installation](installation.html#2-connect-an-ai-provider)), an `actionTimeout` in `playwright.config.ts` ([Installation](installation.html#3-set-actiontimeout)), and `npx tamash-playwright doctor` to check it.
@@ -24,7 +24,7 @@ Then a `.env` with `HEALER_PROVIDER` + its key ([Installation](installation.html
 - **`apply-heals`, `init-skill`, and the agent skill** are TypeScript CLI features — see [CLI commands](cli.html).
 - **Non-`@playwright/test` runners** (Cucumber, Jest, a plain script) — the import swap still works; add `closeCopilotSubscriptionClient()` to teardown if you use `copilot-subscription`. See [Running in CI](ci.html#non-playwright-runners).
 - **`getDurable()`** on any locator — [Writing tests](writing-tests.html#getting-a-durable-locator-on-demand-getdurable).
-- **Trend dashboard** — [`tamash-playwright-dashboard`](https://www.npmjs.com/package/tamash-playwright-dashboard) is a separate reporter package that reads this package's heal and failure-analysis reports with zero configuration: pass-rate trends, per-test history, a Self-Healing Analytics page, and a Failure Analytics page with AI verdicts. See [Reports & logs](reports.html#trends-across-runs-tamash-playwright-dashboard).
+- **Trend dashboard** — `@vibetestq/tamash-playwright-dashboard` is a separate reporter package that reads this package's heal and failure-analysis reports with zero configuration: pass-rate trends, per-test history, a Self-Healing Analytics page, and a Failure Analytics page with AI verdicts. See [Reports & logs](reports.html#trends-across-runs-tamash-playwright-dashboard).
 
 ## Working examples
 

@@ -5,15 +5,19 @@ This page is the TypeScript / Playwright Test path. For Python or Java, see [Pyt
 ## 1. Install the package
 
 ```sh
-npm install tamash-playwright
+npm install @vibetestq/tamash-playwright
 npm install -D @playwright/test   # if you don't already have it
 ```
 
-New capabilities land on npm's `beta` tag before promotion to `latest`:
+`@vibetestq/tamash-playwright` is a restricted (private) package and needs a license under the TAMASH Software License. Licensed users receive an npm access token with read access to the `@vibetestq` organization. Put it in an `.npmrc` file in the project root, and in the CI environment as a secret:
 
-```sh
-npm install tamash-playwright@beta
+```ini
+//registry.npmjs.org/:_authToken=${NPM_TOKEN}
 ```
+
+Set `NPM_TOKEN` to the token before running `npm install`. For a token or a license, write to support@vibetestq.com.
+
+The package was published as `tamash-playwright` up to 0.15.0-beta.1. To move, replace the package in `package.json` and change imports from `'tamash-playwright'` to `'@vibetestq/tamash-playwright'`. The `npx tamash-playwright` commands are unchanged.
 
 ## 2. Connect an AI provider
 
@@ -89,7 +93,7 @@ See [CLI commands](cli.html#doctor) for flags, and [Troubleshooting](troubleshoo
 ## 5. Swap the import
 
 ```ts
-import { test, expect } from 'tamash-playwright';   // was '@playwright/test'
+import { test, expect } from '@vibetestq/tamash-playwright';   // was '@playwright/test'
 ```
 
 That's the whole integration. Continue to [Writing tests](writing-tests.html).
