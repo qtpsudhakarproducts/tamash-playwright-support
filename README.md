@@ -1,5 +1,7 @@
 # tamash-playwright — Support & Documentation
 
+> **Replaced.** `tamash-playwright` is replaced by **`@vibetestq/tamash-runsights`**: TAMASH Shield (healing and Maintenance) and RunSights (reports) for Playwright Test and Cucumber. Documentation and help: [tamash.vibetestq.com](https://tamash.vibetestq.com). This page is kept for reference and no longer maintained.
+
 Plug-and-play **self-healing for Playwright**, across **TypeScript**, **Python**, and **Java**.
 
 When a test can't find an element, `tamash-playwright` asks an AI model (or a free, zero-AI rule-based matcher) to locate it on the live page and retries. If it succeeds, the test keeps going; if not, it fails normally — exactly like stock Playwright. Every attempt is logged: provider, suggested selector, token cost, and where the locator lives in your code. In most projects it's one import swap.
