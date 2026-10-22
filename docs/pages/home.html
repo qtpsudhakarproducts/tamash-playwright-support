@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tamash-playwright: self-healing for Playwright</title>
+<meta name="description" content="Self-healing for Playwright tests in TypeScript, Python and Java. When a locator breaks, the test finds the element again and keeps going.">
+<meta property="og:title" content="tamash-playwright: self-healing for Playwright">
+<meta property="og:description" content="When a locator breaks, the test finds the element again and keeps going. TypeScript, Python and Java.">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem('tp-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body class="home">
+__HEADER__
+<main id="main">
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Self-healing for Playwright</p>
+      <h1>Your tests keep running when the UI changes.</h1>
+      <p class="lead">A button is renamed, a field moves, and a test breaks even though the app works. tamash-playwright finds the element again on the live page, retries, and records what it did, so the build stays green and you see exactly what changed.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="installation.html">Get started</a>
+        <a class="btn" href="how-healing-works.html">How healing works</a>
+        <a class="btn ghost" href="intro.html">Read the introduction</a>
+      </div>
+      <div class="tabs" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Choose a language">
+          <button role="tab" aria-selected="true" data-tab="ts">TypeScript</button>
+          <button role="tab" aria-selected="false" data-tab="py">Python</button>
+          <button role="tab" aria-selected="false" data-tab="java">Java</button>
+        </div>
+        <div class="tab-panel" data-panel="ts"><pre><code>npm install @vibetestq/tamash-playwright
+
+<span class="c">// before</span>
+import { test, expect } from '@playwright/test';
+<span class="c">// after</span>
+import { test, expect } from '@vibetestq/tamash-playwright';</code></pre></div>
+        <div class="tab-panel" data-panel="py" hidden><pre><code>pip install tamash-playwright
+
+<span class="c"># then wire in one fixture override, see the Python page</span></code></pre></div>
+        <div class="tab-panel" data-panel="java" hidden><pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;io.github.qtpsudhakarproducts&lt;/groupId&gt;
+  &lt;artifactId&gt;tamash-playwright&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c">// then swap one annotation: @UseTamashPlaywright</span></code></pre></div>
+      </div>
+      <p class="hero-note">The TypeScript package is private and needs a license and an npm token. <a href="installation.html#1-install-the-package">How to get access</a>.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>What you get</h2>
+    <div class="cards">
+      <a class="card" href="how-healing-works.html"><span class="card-icon">◎</span><h3>Heals at run time</h3><p>When an action cannot find its element, the page is read again and the element is located. The original arguments are kept on the retry.</p></a>
+      <a class="card" href="apply-heals.html"><span class="card-icon">✓</span><h3>Makes heals permanent</h3><p><code>apply-heals</code> turns run-time heals into source changes, re-runs the tests with healing off to prove them, and opens a pull request in CI.</p></a>
+      <a class="card" href="providers.html"><span class="card-icon">⇄</span><h3>Your choice of model</h3><p>Ollama, OpenAI, Anthropic, Gemini, a Claude or Copilot subscription, or a rule-based matcher with no AI and no network calls.</p></a>
+      <a class="card" href="vision-fallback.html"><span class="card-icon">◐</span><h3>Vision fallback</h3><p>When the page structure is not enough, a screenshot goes to a vision model, if your provider supports one.</p></a>
+      <a class="card" href="reports.html"><span class="card-icon">▤</span><h3>Reports and logs</h3><p>Every attempt is logged, healed or not: the provider, the selector it suggested, the token cost and where the locator lives in your code.</p></a>
+      <a class="card" href="agent-skill.html"><span class="card-icon">✦</span><h3>Works with your coding agent</h3><p>One command installs a skill for Claude Code, Cursor, Copilot, Windsurf, Kiro or Zed that runs the whole heal-review-fix loop.</p></a>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><h3>A locator breaks</h3><p>Playwright cannot find the element. Without healing, the test fails here.</p></li>
+      <li><h3>The element is found again</h3><p>The healer reads the live page, asks the provider where the element went, and checks the answer against the page before using it.</p></li>
+      <li><h3>The test continues</h3><p>The action is retried and the heal is recorded. If it cannot be healed, the test fails as it would in stock Playwright.</p></li>
+    </ol>
+  </section>
+
+  <section class="band">
+    <h2>Choose your language</h2>
+    <div class="cards three">
+      <a class="card" href="typescript.html"><h3>TypeScript</h3><p>Playwright Test. The most complete integration. Swap one import.</p><span class="more">Open guide →</span></a>
+      <a class="card" href="python.html"><h3>Python</h3><p>pytest, with a step-by-step HTML report. Wire in one fixture override.</p><span class="more">Open guide →</span></a>
+      <a class="card" href="java.html"><h3>Java</h3><p>JUnit 5. Add the dependency and swap one annotation.</p><span class="more">Open guide →</span></a>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <h2>Find what you need</h2>
+    <div class="links">
+      <a href="installation.html">Installation and access</a>
+      <a href="writing-tests.html">Writing tests</a>
+      <a href="ci.html">Running in CI</a>
+      <a href="env-vars.html">Environment variables</a>
+      <a href="cli.html">CLI commands</a>
+      <a href="troubleshooting.html">Troubleshooting</a>
+      <a href="release-notes.html">Release notes</a>
+      <a href="https://github.com/qtpsudhakarproducts/tamash-playwright-support/issues/new/choose">Get support</a>
+    </div>
+  </section>
+</main>
+__FOOTER__
+<script src="search-index.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

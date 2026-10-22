@@ -2,15 +2,11 @@
 
 The full, dated changelog ships inside the package and is on GitHub:
 
-- **TypeScript** — [`CHANGELOG.md`](https://www.npmjs.com/package/tamash-playwright?activeTab=code) in the published package
+- **TypeScript** — `CHANGELOG.md` in the published package `@vibetestq/tamash-playwright`
 - **Python** — [`CHANGELOG.md`](https://github.com/qtpsudhakarproducts/tamash-playwright-python/blob/main/CHANGELOG.md) on GitHub, and [PyPI release history](https://pypi.org/project/tamash-playwright/#history)
 - **Java** — [Maven Central versions](https://central.sonatype.com/artifact/io.github.qtpsudhakarproducts/tamash-playwright)
 
-New TypeScript capabilities land on npm's `beta` tag first:
-
-```sh
-npm install tamash-playwright@beta
-```
+New TypeScript versions are published to the `@vibetestq/tamash-playwright` package; beta versions use the `beta` tag.
 
 ## Highlights — 0.15.0-beta (TypeScript)
 

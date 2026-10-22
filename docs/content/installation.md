@@ -5,15 +5,29 @@ This page is the TypeScript / Playwright Test path. For Python or Java, see [Pyt
 ## 1. Install the package
 
 ```sh
-npm install tamash-playwright
+npm install @vibetestq/tamash-playwright
 npm install -D @playwright/test   # if you don't already have it
 ```
 
-New capabilities land on npm's `beta` tag before promotion to `latest`:
+`@vibetestq/tamash-playwright` is a restricted (private) package and needs a license under the TAMASH Software License. Licensed users receive an npm access token with read access to the `@vibetestq` organization. Put it in an `.npmrc` file in the project root, and in the CI environment as a secret:
+
+```ini
+//registry.npmjs.org/:_authToken=${NPM_TOKEN}
+```
+
+Set `NPM_TOKEN` to the token before running `npm install`. For a token or a license, write to support@vibetestq.com.
+
+The package was published as `tamash-playwright` up to 0.15.0-beta.1. To move, replace the package in `package.json` and change imports from `'tamash-playwright'` to `'@vibetestq/tamash-playwright'`. The `npx tamash-playwright` commands are unchanged.
+
+## License key (TypeScript)
+
+Healing in the TypeScript package needs the license key of your project. In the TAMASH portal, open **Projects**, copy the key of your project, and set it as `TAMASH_LICENSE_KEY` in `.env` and in your CI secrets:
 
 ```sh
-npm install tamash-playwright@beta
+TAMASH_LICENSE_KEY=TAMASH1.xxxxxxxx.xxxxxxxx
 ```
+
+The key is checked on your machine, with no network call. With no key, healing works for 14 days from the first use in the project, then it is off. A trial key allows 20 heals in total, and a paid key includes a number of heals each month; healing is off until the 1st of the next month once they are used. An expired key works for its grace period. When healing is off because of the key, a failed action fails as it does in plain Playwright, and the console says why. `npx tamash-playwright doctor` shows the state of the key. The Python and Java packages do not check a key yet.
 
 ## 2. Connect an AI provider
 
@@ -89,7 +103,7 @@ See [CLI commands](cli.html#doctor) for flags, and [Troubleshooting](troubleshoo
 ## 5. Swap the import
 
 ```ts
-import { test, expect } from 'tamash-playwright';   // was '@playwright/test'
+import { test, expect } from '@vibetestq/tamash-playwright';   // was '@playwright/test'
 ```
 
 That's the whole integration. Continue to [Writing tests](writing-tests.html).

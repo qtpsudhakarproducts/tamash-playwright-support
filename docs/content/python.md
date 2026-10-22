@@ -372,7 +372,7 @@ Beyond the core click/fill/navigate actions and `expect()` assertions, all of th
 
 ## License
 
-Free to use, including commercially. The source code may not be copied, modified, redistributed, or resold without prior written permission. See the LICENSE file included in this package for the full terms.
+Free for personal and non-commercial use. Commercial use, including use on behalf of a company and training within or for a company, requires a paid commercial license under a written agreement with VibeTestQ ([support@vibetestq.com](mailto:support@vibetestq.com)). A company may evaluate it for one day before licensing. Reports, dashboards and code changes it produces belong to you. The source code may not be copied, modified, redistributed, or resold without prior written permission. These terms apply to versions released on or after 26 September 2026. See the LICENSE file included in this package for the full terms.
 
 ## Support
 

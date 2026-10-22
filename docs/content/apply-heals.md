@@ -52,6 +52,8 @@ python .tamash-playwright/verify_heals.py   # Python
 
 This re-runs **exactly the affected tests** with `HEALER_ENABLED=false`. A pass proves the rewritten selectors work standalone — not just "worked while healing was still propping them up." In CI, this verification step runs automatically and its result goes into the PR body.
 
+**Cucumber (TS).** Heals from a cucumber-js run record the `.feature` file, scenario line and scenario name, with no setup. The affected scenarios are listed as `features/x.feature:LINE`, and `verify-heals.cjs` re-runs them through cucumber-js with an anchored `--name` filter per scenario. cucumber-js adds CLI paths to the profile's paths instead of replacing them, so the filter keeps the run to the affected scenarios.
+
 ## Good to know
 
 - **Nothing runs automatically.** `apply-heals` is a separate, deliberate command — a test run never edits source on its own.

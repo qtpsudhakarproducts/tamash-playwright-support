@@ -4,6 +4,7 @@
 
 | Provider | Auth | CI | Languages | Notes |
 |---|---|---|---|---|
+| [`tamash-cloud`](provider-tamash-cloud.html) | your project key | ✅ | TypeScript | no AI key of your own: the rules run on your machine, the TAMASH portal's model answers the rest |
 | [`ollama`](providers-api-key.html#ollama) | free API key | ✅ | TS, Python, Java | Ollama Cloud; good default |
 | [`openai`](providers-api-key.html#openai) | API key | ✅ | TS, Python, Java | |
 | [`anthropic`](providers-api-key.html#anthropic) | API key | ✅ | TS, Python, Java | |

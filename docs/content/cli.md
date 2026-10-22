@@ -23,7 +23,19 @@ Pre-flight checks. Prints a colour-coded summary table.
 
 A provider `[FAIL]` is one of: `not-installed` (with the exact `npm install` / vendor installer), `not-authenticated` (`claude login` / check the key / subscription over quota), `timeout` (raise `actionTimeout`), `bad-model` (fix the `<PROVIDER>_MODEL` value), `network` (proxy / base URL), `bad-response` (model too small / off-task). The raw error line is printed underneath.
 
-- `--dir <path>` — directory to scan for locators (default `tests`).
+- `--dir <path>` — directory to scan for locators (default `tests`). When no test files are found there, the locator checks report `[INFO] No files to scan`.
+
+### Cucumber projects
+
+With a `cucumber.{js,cjs,mjs,json,yaml,yml}` file or an `@cucumber/cucumber` dependency, and no `playwright.config.*`, `doctor` runs these checks instead:
+
+| Check | |
+|---|---|
+| **Action Timeout** | Step timeout (`setDefaultTimeout` from `@cucumber/cucumber`, default 5000ms) against action timeout (`context`/`page.setDefaultTimeout`, default 30000ms). Warns when the action timeout is unset, not below the step timeout, or leaves under ~17000ms for healing. |
+| **Healing Wiring** | A `bindContext()` or `bindPageActions()` call exists. With `copilot-subscription`, a `closeCopilotSubscriptionClient()` call exists too. |
+| **Locators** | Scans the config's `require`/`import` paths (default `features/`); `--dir` overrides. |
+
+A project with a `playwright.config.*`, including playwright-bdd, gets the standard checks.
 
 ## `apply-heals`
 
